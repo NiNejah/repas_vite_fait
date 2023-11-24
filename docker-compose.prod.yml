@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  reverseproxy:
+    restart: always
+    build:
+      context: reverse-proxy/
+      dockerfile: ./Dockerfile.prod
+    depends_on:
+      - api
+      - frontend
+    volumes:
+      - ./reverse-proxy/log:/var/log/nginx
+
+  frontend:
+    container_name: repas_frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8080:80"
+
+  api:
+    container_name: repas_api
+    build:
+      context: api
+      dockerfile: Dockerfile.prod
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/
+      - MONGO_DB=M2WEB
+    depends_on:
+      - mongodb
+
+  mongodb:
+    container_name: repas_mongo
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=M2WEB
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
+  
