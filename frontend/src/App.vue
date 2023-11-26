@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import LogoButton from './components/LogoButton.vue'
 </script>
 
 <template>
@@ -14,6 +15,7 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+      <LogoButton routerlink="/about" image="logo.svg"></LogoButton>
     </div>
   </header>
 
