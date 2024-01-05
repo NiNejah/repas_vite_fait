@@ -2,6 +2,7 @@
 
 
 # # Wait for MongoDB to start
+sudo systemctl start mongod
 # sleep 5
 
 # # Run MongoDB commands using mongosh

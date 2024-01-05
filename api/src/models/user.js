@@ -1,10 +1,42 @@
 import mongoose from 'mongoose';
+import validator  from 'validator';
+import bcrypt from  'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { config } from "dotenv";
+
+config();
+const token_key = process.env.TOKEN_KEY;
+
+
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    username: { 
+        type: String, 
+        required: true, 
+        unique: true 
+    },
+    email: { 
+        type: String, 
+        required: true, 
+        unique: true,
+        validate(v){
+            if(!validator.isEmail(v)) throw new Error('Invalid e-mail!');
+        }
+    },
+    password: { 
+        type: String, 
+        required: true,
+        validate(v){
+            if(!validator.isLength(v, {min: 4, max: 20} )) throw new Error('The password must be between 4 and 20 characters long!');
+        }
+    }
 });
+
+userSchema.pre('save', async function (){
+    if(this.isModified('password')) 
+        this.password = await bcrypt.hash(this.password, 8);
+});
+
 
 const User = mongoose.model('User', userSchema);
 
@@ -70,16 +102,31 @@ export const getUserByUsername = async (username) => {
     }
 };
 
-export const getUserByEmail = async (email) => {
+export const updateUser = async (id, newData) => {
+    try {
+        if (newData.password) {
+            newData.password = await bcrypt.hash(newData.password, 8);
+        }
+        const user = await User.findByIdAndUpdate(id, newData, { new: true });
+        return { success: true, data: user, message: 'User updated successfully' };
+    } catch (error) {
+        return { success: false, message: 'Error updating User: ' + error };
+    }
+}
+
+export const findUser = async (email, password) => {
     try {
         const user = await User.findOne({ email: email });
-        if (!user) {
+        if (!user) 
             return { success: false, message: 'User not found' };
-        }
-        return { success: true, data: user };
-    } catch (error) {
-        return { success: false, message: 'Error getting user: ' + error };
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid)
+            return { success: false, message: 'Wrong password' };
+
+        const token = jwt.sign({ userId: user._id }, token_key);
+        return { success: true, data: user, token: token };
+    }catch(error){
+        return { success: false, message: 'User not found ' + error };
     }
 };
-
 

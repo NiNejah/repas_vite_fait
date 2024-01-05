@@ -4,8 +4,10 @@ import {
   createUser,
   getUserById,
   getUserByUsername,
-  getUserByEmail
+  updateUser,
+  findUser
 } from '../models/user.js';
+
 
 
 export const addUser = async (req, res) => {
@@ -37,24 +39,6 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-export const loginUser = async (req, res) => {
-  console.log(req.body.email);
-  try {
-    const user = await getUserByEmail(req.body.email);
-    //console.log(user.data.username);
-    if (!user) {
-      res.status(500).json({ success: false, message: 'User not found' });
-    }
-    if (req.body.password === user.data.password) {
-      // return { success: true, data: user };
-      res.status(user.success ? 200 : 404).json(user);
-    } else {
-      res.status(500).json({ success: false, message: 'wrong password' });
-    }
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
-  }
-};
 
 export const getUserByName = async (req, res) => {
   try {
@@ -62,6 +46,24 @@ export const getUserByName = async (req, res) => {
     if (!user) {
       res.status(500).json({ success: false, message: 'User not found' });
     }
+    res.status(user.success ? 200 : 404).json(user);
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+export const modifyUser = async (req, res) => {
+  try {
+    const response = await updateUser(req.params.id, req.body);
+    res.status(response.success ? 200 : 404).json(response);
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+}
+
+export const loginUser = async (req, res) => {
+  try {
+    const user = await findUser(req.body.email, req.body.password);
     res.status(user.success ? 200 : 404).json(user);
   } catch (error) {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
