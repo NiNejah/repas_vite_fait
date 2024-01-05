@@ -132,16 +132,6 @@ router.route('/users').post(userController.addUser);
  *               message: User not found or error updating user.
  *     tags:
  *       - Users
- *     examples:
- *       example1:
- *         summary: Example with Authorization header
- *         description: This is an example with the Authorization header including a valid token.
- *         value:
- *           username: "nouveau_nom"
- *           email: "nouveau_email@example.com"
- *           password: "nouveau_mot_de_passe"
- *         headers:
- *           Authorization: Bearer YOUR_TOKEN
  */
 router.route('/users/:id').put(authenticateToken, userController.modifyUser);
 
