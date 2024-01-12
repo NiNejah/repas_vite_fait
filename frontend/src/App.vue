@@ -1,87 +1,56 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import LogoButton from './components/LogoButton.vue'
+<script setup >
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div id="app">
+    <nav>
+      <ul>
+        <li>
+          <router-link to="/" ><font-awesome-icon icon="home"/> Home</router-link>
+        </li>
+        <li>
+          <router-link to="/registre" ><font-awesome-icon icon="user-plus" /> Sign Up</router-link>
+        </li>
+        <li>
+          <router-link to="/login" ><font-awesome-icon icon="sign-in-alt" /> Login</router-link>
+        </li>
+      </ul>
+    </nav>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-      <LogoButton routerlink="/about" image="logo.svg"></LogoButton>
+    <div>
+      <h1>Repas Vite Fait</h1>
+      <router-view />
     </div>
-  </header>
-
-  <RouterView />
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
+<style>
+#app {
   text-align: center;
-  margin-top: 2rem;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #2c3e50;
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
 }
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
+li {
+  float: left;
 }
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.error {
+  color: red;
+  font-weight: bold;
+  list-style-type: none;
+  margin-top: 1em;
 }
 </style>

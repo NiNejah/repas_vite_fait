@@ -13,6 +13,7 @@ const requests = {
 };
 
 export const api = {
-  getContacts: () => requests.get('contacts', {}),
-  addContact: (body) => requests.post('contact',body),
+  getAllUsers: () => requests.get('users', {}),
+  addUser: (body) => requests.post('users', body),
+  login: (body) => requests.post('users/login', body),
 };

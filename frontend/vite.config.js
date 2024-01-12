@@ -6,12 +6,11 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    watch: {
-      usePolling: true,
-    },
-    host: true,
-    strictPort:true,
-    port: 3000,
+    proxy: {
+      '^/api/users': {
+        target: 'http://localhost:8080' 
+      }
+    }
   },
   plugins: [
     vue(),
@@ -21,5 +20,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  build: {
+    outDir: 'target/dist',
+    assetsDir: 'static'
+  }
 
 })

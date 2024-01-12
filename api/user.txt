@@ -2,6 +2,11 @@
   "username": "ali",
   "email": "ali@example.com",
   "password": "1111"
+},
+{
+  "username": "toto1",
+  "email": "toto1@gmail.com",
+  "password": "1111"
 }
 
 
