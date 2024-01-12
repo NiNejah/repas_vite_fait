@@ -5,6 +5,8 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 
+import './assets/style.css';
+
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
