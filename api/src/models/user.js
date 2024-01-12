@@ -1,39 +1,60 @@
 import mongoose from 'mongoose';
-import validator  from 'validator';
-import bcrypt from  'bcryptjs';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { config } from "dotenv";
 
 config();
 const token_key = process.env.TOKEN_KEY;
 
-
-
 const userSchema = new mongoose.Schema({
-    username: { 
-        type: String, 
-        required: true, 
-        unique: true 
-    },
-    email: { 
-        type: String, 
-        required: true, 
-        unique: true,
-        validate(v){
-            if(!validator.isEmail(v)) throw new Error('Invalid e-mail!');
-        }
-    },
-    password: { 
-        type: String, 
+    username: {
+        type: String,
         required: true,
-        validate(v){
-            if(!validator.isLength(v, {min: 4, max: 20} )) throw new Error('The password must be between 4 and 20 characters long!');
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        validate(v) {
+            if (!validator.isEmail(v)) throw new Error('Invalid e-mail!');
         }
+    },
+    password: {
+        type: String,
+        required: true,
+        validate(v) {
+            if (!validator.isLength(v, { min: 4, max: 20 })) throw new Error('The password must be between 4 and 20 characters long!');
+        }
+    },
+    favorites: [{
+        type : String 
+    }],
+    vegetarian: {
+        type: Boolean,
+        default: false,
+    },
+    program: {
+        type: [
+            {
+                id: {
+                    type:String,
+                    required: true,
+                },
+                date: {
+                    type: Date,
+                    required: true,
+                }
+            }
+        ],
+        default: [],
     }
 });
 
-userSchema.pre('save', async function (){
-    if(this.isModified('password')) 
+userSchema.pre('save', async function () {
+    console.log("10101010101010101010101010101010101010101010101");
+    if (this.isModified('password'))
         this.password = await bcrypt.hash(this.password, 8);
 });
 
@@ -117,7 +138,7 @@ export const updateUser = async (id, newData) => {
 export const findUser = async (email, password) => {
     try {
         const user = await User.findOne({ email: email });
-        if (!user) 
+        if (!user)
             return { success: false, message: 'User not found' };
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid)
@@ -125,8 +146,49 @@ export const findUser = async (email, password) => {
 
         const token = jwt.sign({ userId: user._id }, token_key);
         return { success: true, data: user, token: token };
-    }catch(error){
+    } catch (error) {
         return { success: false, message: 'User not found ' + error };
     }
 };
 
+export const getFavorites = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user)
+            return { success: false, message: 'User not found' };
+        return { success: true, data: user.favorites };
+    }catch {
+        return { success: false, message: 'User not found ' + error };
+    }
+}
+
+export const addFavorite = async (userId,body) =>{
+    const itemId = body.favoriteId; // Assuming itemId is sent in the request body
+    try {
+        const user = await User.findById(userId);
+        if (!user)
+            return { success: false, message: 'User not found' };
+        user.favorites.push(itemId);
+        console.log("ggggggggggggggggggggggggggg");
+        await user.save();
+        return { success: true, data: user.favorites };
+    }catch (error) {
+        console.error(error); // Log the error for debugging
+        return { success: false, message: 'User not found ' + error };
+    }
+}
+
+export const removeFavorite = async (userId,body) =>{
+    const itemId = body.favoriteId; // Assuming itemId is sent in the request body
+    try {
+        const user = await User.findById(userId);
+        if (!user)
+            return { success: false, message: 'User not found' };
+        // Add the itemId to favorites
+        user.favorites = user.favorites.filter(favId => favId.toString() !== itemId);
+        await user.save();
+        return { success: true, data: user.favorites };
+    }catch {
+        return { success: false, message: 'User not found ' + error };
+    }
+} 

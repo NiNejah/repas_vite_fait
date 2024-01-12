@@ -163,5 +163,64 @@ router.route('/users/:id').put(authenticateToken, userController.modifyUser);
  */
 router.route('/users/login').post(userController.loginUser);
 
-export default router;
 
+// ************************************************ FAVORITE : 
+/**
+ * @openapi
+ * /users/{id}/favorites:
+ *   get:
+ *     summary: Get a favorites by userID.
+ *     description: Returns a all favorites by userID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to get it's favorites repat.
+ *     responses:
+ *       200:
+ *         description: all favorites of a specified user .
+ *       404:
+ *         description: user not found.
+ *     tags:
+ *       - Users
+ */
+router.route("/users/:id/favorites").get(userController.getAllFavorites);
+
+/**
+ * @openapi
+ * /users/{id}/favorites/add:
+ *   post:
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to add favorites .
+ *     summary: Create a new favorite .
+ *     description: Creates a new favorite with the provided id.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               favoriteId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: all user favorites .
+ *       404:
+ *         description: Error 
+ *     tags:
+ *       - Users
+ */
+router.route("/users/:id/favorites/add").post(userController.addOneFavorite);
+
+router.route("/users/:id/favorites/remove").get(userController.removeOneFavorite);
+
+
+export default router;
