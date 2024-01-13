@@ -1,10 +1,26 @@
 <script setup >
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
+import recipesList from '../data/recipes.js';
+import Recipe from './Recipe.vue';
 
 const isConnected = ref(false);
+const searchQuery = ref('');
+
+const recipes = ref([]);
 
 const signout = () =>{
   console.log("disconnected");
+}
+
+const searchRecipes = async () => {
+  try {
+    if(searchQuery.value === ''){}
+    else {
+     recipes.value = recipesList;
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 </script>
@@ -27,6 +43,15 @@ const signout = () =>{
         </li>
       </ul>
     </nav>
+    <div id="search">
+      <input v-model="searchQuery" class="searchBar" type="search" placeholder="Give a list of ingredients">
+      <b-button variant="success" @click="searchRecipes">Search</b-button>
+    </div>
+    <div id="recipes">
+      <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
+        <Recipe :id="recipe.id" :name="recipe.name" :url="recipe.url" :image_url="recipe.image_url"/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -58,5 +83,22 @@ li a {
   font-weight: bold;
   list-style-type: none;
   margin-top: 1em;
+}
+
+#search {
+  margin-top: 20px;
+  display: inline;
+}
+
+.searchBar {
+  width: 50%;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+.recipe {
+  text-align: center;
 }
 </style>
