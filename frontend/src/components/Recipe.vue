@@ -1,5 +1,6 @@
 <script setup>
 import {ref, defineProps} from 'vue';
+import { useUserStore } from '../stores/userStore.js';
 
 const props = defineProps({
     id: String,
@@ -7,16 +8,17 @@ const props = defineProps({
     url: String, 
     image_url: String
 });
+const userStore = useUserStore();
 
 const name = ref(props.name);
 
 </script>
 
 <template>
-    <div class="recipe">
+    <div class="card">
         <div class="header">
             <a v-bind:href="url" target="_blank"><h3>{{ name }}</h3></a>
-            <b-button><font-awesome-icon icon="star"/> </b-button>
+            <b-button id="favorite" v-if="userStore.isConnected"><font-awesome-icon icon="star"/> </b-button>
         </div>
         <div class="content">
             <img v-bind:src="props.image_url">
@@ -26,7 +28,7 @@ const name = ref(props.name);
 
 <style scoped>
 
-.recipe {
+.card {
     background-color: #fff;
     border: 1px solid #e2e2e2;
     border-radius: 8px;
@@ -35,30 +37,37 @@ const name = ref(props.name);
     overflow: hidden;
     transition: box-shadow 0.3s ease;
     position: relative;
-    width: 50%;
+    width: 100%;
     text-align: center;
 }
 
 a {
     color: inherit;
     text-decoration: none;
-    font-weight: bold;
 }
 
 .header h3 {
-    text-align: left;
+    float: left;
     padding: 10px;
     overflow: hidden;
+    min-width: min-content;
+    font-weight: bolder;
     max-width: 80%;
 }
 
 .header {
     background-color: lightyellow;
+    border-bottom-width: 1px;
 }
 
 .content img {
     border-radius: 10px;
     margin: 10px;
     max-width: 50%;
+}
+
+#favorite{
+    float: right;
+    margin: 10px;
 }
 </style>

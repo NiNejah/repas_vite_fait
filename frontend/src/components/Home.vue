@@ -1,15 +1,19 @@
 <script setup >
-import {ref, computed} from 'vue';
+import {ref, computed, toRefs} from 'vue';
 import recipesList from '../data/recipes.js';
 import Recipe from './Recipe.vue';
+import { useUserStore } from '../stores/userStore.js';
 
-const isConnected = ref(false);
+const userStore = useUserStore();
+const { isConnected } = toRefs(userStore);
 const searchQuery = ref('');
 
 const recipes = ref([]);
 
 const signout = () =>{
   console.log("disconnected");
+  userStore.disconnect();
+  userStore.setUser(null);
 }
 
 const searchRecipes = async () => {
@@ -48,8 +52,10 @@ const searchRecipes = async () => {
       <b-button variant="success" @click="searchRecipes">Search</b-button>
     </div>
     <div id="recipes">
-      <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
-        <Recipe :id="recipe.id" :name="recipe.name" :url="recipe.url" :image_url="recipe.image_url"/>
+      <div class="col-md-4">
+        <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
+          <Recipe :id="recipe.id" :name="recipe.name" :url="recipe.url" :image_url="recipe.image_url"/>
+        </div>
       </div>
     </div>
   </div>
@@ -98,7 +104,12 @@ li a {
   margin-right: 10px;
 }
 
-.recipe {
+.col-md-4 {
+  display: inline-block;
+  width: 40%;
+}
+
+#recipes {
   text-align: center;
 }
 </style>

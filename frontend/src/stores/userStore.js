@@ -12,7 +12,7 @@ export const useUserStore = defineStore('user', () => {
         user.value = userData;
     }
 
-    const isConnected = computed(() => user.connected);
+    const isConnected = computed(() => connected.value);
     const connect = () => {
         connected.value = true;
     }

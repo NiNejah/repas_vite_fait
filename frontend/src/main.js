@@ -21,7 +21,7 @@ import {
     faSignOutAlt
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt);
+library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faStar);
 const app = createApp(App);
 app.component('font-awesome-icon', FontAwesomeIcon);
 
