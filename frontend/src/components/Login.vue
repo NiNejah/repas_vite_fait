@@ -54,7 +54,8 @@ const closeSigninAndOpenSginup = () =>{
                         <span>Login</span>
                     </button>
                 </div>
-                <a class="creatCompte" @click="closeSigninAndOpenSginup"> Vous n'avez pas un compte ? </a>
+                <router-link to="/registre" > Vous n'avez pas un compte ?</router-link>
+                <!-- <a class="creatCompte" @click="closeSigninAndOpenSginup"> Vous n'avez pas un compte ? </a> -->
                 <div class="form-group">
                     <div v-if="data.errorMessage" class="alert alert-danger" >{{ data.errorMessage }}</div>
                 </div>

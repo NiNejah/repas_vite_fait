@@ -30,7 +30,7 @@ const router = createRouter({
       component: () => import('../components/Favoris.vue')
     },
     {
-      path: '/calendrier',
+      path: '/calendar',
       name: 'calendrier',
       component: () => import('../components/Calendrier.vue')
     }
