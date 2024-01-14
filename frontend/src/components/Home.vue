@@ -35,8 +35,13 @@ const searchRecipes = async () => {
   try {
     if(keywords._rawValue.length > 0){
       const filters = keywords._rawValue.join(' ');
+      let health = "";
+      if(document.getElementById("vegetarian").checked) health += "&health=vegetarian";
+      if(document.getElementById("peanut").checked) health += "&health=peanut-free";
+      if(document.getElementById("pork").checked) health += "&health=pork-free";
       console.log(filters);
-      const response = await fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + filters + "&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c");
+      const response = await fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + filters 
+      + "&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c" + health);
       if(response.status === 200){
         //removeRecipesCards();
 
@@ -87,6 +92,20 @@ const removeRecipesCards = () => {
       <input v-model="searchQuery" class="searchBar" type="search" placeholder="Add an ingredient to your list">
       <b-button variant="warning" @click="addKeyword">+</b-button>
       <b-button variant="success" @click="searchRecipes">Search</b-button>
+    </div>
+    <div id="checkboxes">
+      <div class="checkbox">
+        <input type="checkbox" id="vegetarian" name="vegetarian"/>
+        <label for="vegetarian">Vegetarian</label>
+      </div>
+      <div class="checkbox">
+        <input type="checkbox" id="peanut" name="peanut"/>
+        <label for="peanut">Peanut-free</label>
+      </div>
+      <div class="checkbox">
+        <input type="checkbox" id="pork" name="pork"/>
+        <label for="pork">Pork-free</label>
+      </div>
     </div>
     <div id="keywords">
       <div class="keyword" v-for="keyword of keywords" :key="keyword">
@@ -157,7 +176,7 @@ li a {
 }
 
 #keywords {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .keyword {
@@ -176,6 +195,15 @@ li a {
 }
 
 .keyword p {
+  margin-right: 5px;
+}
+
+.checkbox {
+  display: inline;
+  text-align: center;
+}
+
+.checkbox * {
   margin-right: 5px;
 }
 </style>
