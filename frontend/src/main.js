@@ -16,12 +16,13 @@ import {
     faHome,
     faStar,
     faUser,
+    faX,
     faUserPlus,
     faSignInAlt,
     faSignOutAlt
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faStar);
+library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faStar, faX);
 const app = createApp(App);
 app.component('font-awesome-icon', FontAwesomeIcon);
 

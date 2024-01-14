@@ -6,7 +6,8 @@ const props = defineProps({
     id: String,
     name: String,
     url: String, 
-    image_url: String
+    image_url: String,
+    calories: Number
 });
 const userStore = useUserStore();
 
@@ -18,10 +19,16 @@ const name = ref(props.name);
     <div class="card">
         <div class="header">
             <a v-bind:href="url" target="_blank"><h3>{{ name }}</h3></a>
-            <b-button id="favorite" v-if="userStore.isConnected"><font-awesome-icon icon="star"/> </b-button>
+            <b-button class="favorite" v-if="userStore.isConnected"><font-awesome-icon icon="star"/> </b-button>
         </div>
         <div class="content">
             <img v-bind:src="props.image_url">
+        </div>
+        <div class="footer" v-if="userStore.isConnected">
+            <div class="selectDate">
+                <input class="schedule" type="date" value="2023-01-18" min="2023-01-01" max="2029-12-31"/>
+                <div class="meal"><b-button variant="success" size="sm">Submit meal to my schedule</b-button></div>
+            </div>
         </div>
     </div>
 </template>
@@ -66,8 +73,39 @@ a {
     max-width: 50%;
 }
 
-#favorite{
+.favorite{
     float: right;
     margin: 10px;
+}
+
+.footer {
+    border-top-width: 1px;
+    margin-left: 10px;
+}
+
+.footer p {
+    float: left;
+    margin-bottom: 5px;
+}
+
+.footer input {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.meal {
+    height: 20px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.schedule {
+    display: inline-block;
+    margin-top: 5px;
+    height: 30px;
+}
+
+.selectDate {
+    text-align: left;
 }
 </style>

@@ -9,11 +9,26 @@ const { isConnected } = toRefs(userStore);
 const searchQuery = ref('');
 
 const recipes = ref([]);
+const keywords = ref([]);
 
 const signout = () =>{
   console.log("disconnected");
   userStore.disconnect();
   userStore.setUser(null);
+}
+
+const addKeyword = () => {
+  if(searchQuery.value !== ''){
+    keywords.value.push(searchQuery.value);
+    let newArray = keywords._rawValue;
+    keywords.value = newArray;
+    searchQuery.value = '';
+  }
+}
+
+const deleteKeyword = (keyword) => {
+  keywords.value = keywords.value.filter(word => word !== keyword);
+  console.log(keywords._rawValue);
 }
 
 const searchRecipes = async () => {
@@ -48,8 +63,15 @@ const searchRecipes = async () => {
       </ul>
     </nav>
     <div id="search">
-      <input v-model="searchQuery" class="searchBar" type="search" placeholder="Give a list of ingredients">
-      <b-button variant="success" @click="searchRecipes">Search</b-button>
+      <input v-model="searchQuery" class="searchBar" type="search" placeholder="Add an ingredient to your list">
+      <b-button variant="warning" @click="addKeyword">+</b-button>
+      <b-button variant="success">Search</b-button>
+    </div>
+    <div id="keywords">
+      <div class="keyword" v-for="keyword of keywords" :key="keyword">
+        <p>{{ keyword }}</p>
+        <button class="delKeyword" @click="deleteKeyword(keyword)"><font-awesome-icon icon="x"/></button>
+      </div>
     </div>
     <div id="recipes">
       <div class="col-md-4">
@@ -111,5 +133,28 @@ li a {
 
 #recipes {
   text-align: center;
+}
+
+#keywords {
+  margin-top: 20px;
+}
+
+.keyword {
+  text-align: center;
+  background-color: lightgoldenrodyellow;
+  padding: 5px;
+  width: 5%;
+  border-radius: 15px;
+  border-width: 2px;
+  margin-right: 5px;
+  display: inline;
+}
+
+.keyword * {
+  display: inline;
+}
+
+.keyword p {
+  margin-right: 5px;
 }
 </style>
