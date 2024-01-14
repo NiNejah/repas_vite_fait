@@ -33,19 +33,40 @@ const deleteKeyword = (keyword) => {
 
 const searchRecipes = async () => {
   try {
-    if(searchQuery.value === ''){}
-    else {
-     recipes.value = recipesList;
+    if(keywords._rawValue.length > 0){
+      const filters = keywords._rawValue.join(' ');
+      console.log(filters);
+      const response = await fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + filters + "&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c");
+      if(response.status === 200){
+        //removeRecipesCards();
+
+        const json = await response.json();
+        const jsonRecipes = json.hits;
+        let listRecipes = [];
+        for(const hit of jsonRecipes){
+          const recipe = hit.recipe;
+          listRecipes.push(recipe);
+        }
+        recipes.value = listRecipes;
+        console.log(recipes.value);
+      }
     }
   } catch (error) {
     console.log(error);
   }
 }
 
+const removeRecipesCards = () => {
+  let cards = document.getElementsByClassName("recipe");
+  while(cards.length > 0){
+    cards[0].parentNode.removeChild(cards[0]);
+  }
+}
+
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" class="bg-gray-100">
     <nav>
       <ul v-if="!isConnected">
         <li >
@@ -65,7 +86,7 @@ const searchRecipes = async () => {
     <div id="search">
       <input v-model="searchQuery" class="searchBar" type="search" placeholder="Add an ingredient to your list">
       <b-button variant="warning" @click="addKeyword">+</b-button>
-      <b-button variant="success">Search</b-button>
+      <b-button variant="success" @click="searchRecipes">Search</b-button>
     </div>
     <div id="keywords">
       <div class="keyword" v-for="keyword of keywords" :key="keyword">
@@ -76,7 +97,7 @@ const searchRecipes = async () => {
     <div id="recipes">
       <div class="col-md-4">
         <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
-          <Recipe :id="recipe.id" :name="recipe.name" :url="recipe.url" :image_url="recipe.image_url"/>
+          <Recipe :id="recipe.uri" :name="recipe.label" :url="recipe.url" :image_url="recipe.image"/>
         </div>
       </div>
     </div>

@@ -18,7 +18,7 @@ const name = ref(props.name);
 <template>
     <div class="card">
         <div class="header">
-            <a v-bind:href="url" target="_blank"><h3>{{ name }}</h3></a>
+            <a v-bind:href="props.url" target="_blank"><h3>{{ props.name }}</h3></a>
             <b-button class="favorite" v-if="userStore.isConnected"><font-awesome-icon icon="star"/> </b-button>
         </div>
         <div class="content">

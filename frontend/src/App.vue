@@ -11,6 +11,9 @@
         <router-link class="menu-link" to="/calendar"><font-awesome-icon icon="home"/> Calendar</router-link>
       </div>
     </div>
+    <div class="spacer">
+      &nbsp;
+    </div>
     <div class="flex-1">
       <router-view />
     </div>
@@ -26,8 +29,18 @@
   transition: background-color 0.3s;
 }
 
+.spacer {
+  width: 256px;
+  height: 100%;
+}
+
 .menu-link:hover {
   background-color: #2c3e50;
+}
+
+.w-64 {
+  height: 100%;
+  position: fixed;
 }
 </style>
 
