@@ -116,7 +116,7 @@ const removeRecipesCards = () => {
     <div id="recipes">
       <div class="col-md-4">
         <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
-          <Recipe :id="recipe.uri" :name="recipe.label" :url="recipe.url" :image_url="recipe.image"/>
+          <Recipe :id="recipe.uri" :name="recipe.label" :url="recipe.url" :image_url="recipe.image" :calories="recipe.calories" :servings="recipe.yield" :source="recipe.source"/>
         </div>
       </div>
     </div>

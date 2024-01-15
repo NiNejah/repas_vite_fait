@@ -7,7 +7,9 @@ const props = defineProps({
     name: String,
     url: String, 
     image_url: String,
-    calories: Number
+    source: String,
+    calories: Number,
+    servings: Number
 });
 const userStore = useUserStore();
 
@@ -22,7 +24,17 @@ const name = ref(props.name);
             <b-button class="favorite" v-if="userStore.isConnected"><font-awesome-icon icon="star"/> </b-button>
         </div>
         <div class="content">
-            <img v-bind:src="props.image_url">
+            <div class="recipeImg">
+                <img v-bind:src="props.image_url">
+            </div>
+            <div class="recipeInfos">
+                <p class="cal">{{ Math.round(props.calories / props.servings) }}</p>
+                <p>Kcal par serving</p>
+                <div class="smallInfos">
+                    <p>Servings: {{ props.servings }}</p>
+                    <p>Source: {{ props.source }}</p>
+                </div>
+            </div>
         </div>
         <div class="footer" v-if="userStore.isConnected">
             <div class="selectDate">
@@ -67,10 +79,22 @@ a {
     border-bottom-width: 1px;
 }
 
-.content img {
+.recipeImg img {
     border-radius: 10px;
-    margin: 10px;
-    max-width: 50%;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    float: left;
+}
+
+.recipeImg {
+    width: 48%;
+}
+.content {
+    display: inline;
 }
 
 .favorite{
@@ -107,5 +131,29 @@ a {
 
 .selectDate {
     text-align: left;
+}
+
+.cal {
+    font-size: 4.5vw;
+    height: auto;
+    margin-bottom: 0px;
+    max-width: 100%;
+    text-align: center;
+}
+
+.recipeInfos {
+    width: 40%;
+    max-width: 40%;
+    height: 100%;
+    float: right;
+    text-align: center;
+    margin-right: 20px;
+}
+
+.smallInfos p{
+    text-align: left;
+    clear: left;
+    float: left;
+    font-weight: bold;
 }
 </style>
