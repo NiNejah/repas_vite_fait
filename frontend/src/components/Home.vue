@@ -1,11 +1,15 @@
 <script setup >
-import {ref} from 'vue';
+import {ref, toRefs} from 'vue';
+import { useUserStore } from "../stores/userStore";
+const store = useUserStore();
+const { connected } = toRefs(store);
 
-const isConnected = ref(false);
 const searchQuery = ref('');
 
 const signout = () =>{
   console.log("disconnected");
+  store.disConnect();
+  store.setUser(null);
 }
 
 const search = () => {
@@ -17,7 +21,7 @@ const search = () => {
 <template>
   <div id="app">
     <nav>
-      <ul v-if="!isConnected">
+      <ul v-if="!connected">
         <li >
           <router-link to="/registre" ><font-awesome-icon icon="user-plus" /> Sign Up</router-link>
         </li>
