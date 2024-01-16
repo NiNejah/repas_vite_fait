@@ -111,51 +111,42 @@ const search = () => {
       </button>
     </div> -->
     <div class="flex items-center justify-center space-x-2 search">
-      <input v-model="searchQuery" 
-        class="border p-2 rounded focus:outline-none focus:ring focus:border-blue-300 w-full md:w-3/4 lg:w-1/2" 
-        type="text" 
-        placeholder="Add an ingredient to your list"
-      >
+      <input v-model="searchQuery"
+        class="border p-2 rounded focus:outline-none focus:ring focus:border-blue-300 w-full md:w-3/4 lg:w-1/2"
+        type="text" placeholder="Add an ingredient to your list">
       <b-button variant="warning" @click="addKeyword">+</b-button>
       <!-- <b-button variant="success" @click="searchRecipes">Search</b-button> -->
-      <button
-        @click="searchRecipes"
-        class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300"
-      >
-      Search
+      <button @click="searchRecipes"
+        class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300">
+        Search
       </button>
     </div>
     <div id="checkboxes">
+
       <div class="checkbox">
-        <input type="checkbox" id="vegetarian" name="vegetarian"/>
+        <input type="checkbox" id="vegetarian" name="vegetarian" />
         <label for="vegetarian">Vegetarian</label>
       </div>
-      <div id="checkboxes">
-        <div class="checkbox">
-          <input type="checkbox" id="vegetarian" name="vegetarian" />
-          <label for="vegetarian">Vegetarian</label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" id="peanut" name="peanut" />
-          <label for="peanut">Peanut-free</label>
-        </div>
-        <div class="checkbox">
-          <input type="checkbox" id="pork" name="pork" />
-          <label for="pork">Pork-free</label>
-        </div>
+      <div class="checkbox">
+        <input type="checkbox" id="peanut" name="peanut" />
+        <label for="peanut">Peanut-free</label>
       </div>
-      <div id="keywords">
-        <div class="keyword" v-for="keyword of keywords" :key="keyword">
-          <p>{{ keyword }}</p>
-          <button class="delKeyword" @click="deleteKeyword(keyword)"><font-awesome-icon icon="x" /></button>
-        </div>
+      <div class="checkbox">
+        <input type="checkbox" id="pork" name="pork" />
+        <label for="pork">Pork-free</label>
       </div>
-      <div id="recipes">
-        <div class="col-md-4">
-          <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
-            <Recipe :id="recipe.uri" :name="recipe.label" :url="recipe.url" :image_url="recipe.image"
-              :calories="recipe.calories" :servings="recipe.yield" :source="recipe.source" />
-          </div>
+    </div>
+    <div id="keywords">
+      <div class="keyword" v-for="keyword of keywords" :key="keyword">
+        <p>{{ keyword }}</p>
+        <button class="delKeyword" @click="deleteKeyword(keyword)"><font-awesome-icon icon="x" /></button>
+      </div>
+    </div>
+    <div id="recipes">
+      <div class="col-md-4">
+        <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
+          <Recipe :id="recipe.uri" :name="recipe.label" :url="recipe.url" :image_url="recipe.image"
+            :calories="recipe.calories" :servings="recipe.yield" :source="recipe.source" />
         </div>
       </div>
     </div>
