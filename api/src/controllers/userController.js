@@ -9,6 +9,7 @@ import {
   getFavorites,
   addFavorite,
   removeFavorite,
+  getVegetarian,
   updateVegetarian,
   createProgramDate,
   removeProgramDate,
@@ -108,7 +109,17 @@ export const removeOneFavorite = async (req, res) => {
   }
 };
 
-
+// Controller function to update the vegetarian field
+export const getVegetarianStatus = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const result = await getVegetarian(id);
+      res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
 // Controller function to update the vegetarian field
 export const updateVegetarianField = async (req, res) => {
     try {

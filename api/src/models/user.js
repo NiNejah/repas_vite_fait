@@ -192,6 +192,16 @@ export const removeFavorite = async (userId,body) =>{
     }
 }
 
+export const getVegetarian = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user)
+            return { success: false, message: 'User not found' };
+        return { success: true, data: user.vegetarian };
+    }catch {
+        return { success: false, message: 'User not found ' + error };
+    }
+}
 // Function to update the vegetarian field
 export const updateVegetarian = async (userId, isVegetarian) => {
     try {

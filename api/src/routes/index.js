@@ -184,7 +184,7 @@ router.route('/users/login').post(userController.loginUser);
  *       404:
  *         description: user not found.
  *     tags:
- *       - Users
+ *       - FAVORITES
  */
 router.route("/users/:id/favorites").get(userController.getAllFavorites);
 
@@ -218,7 +218,7 @@ router.route("/users/:id/favorites").get(userController.getAllFavorites);
 *       500:
  *         description: Internal Server Error.
  *     tags:
- *       - Users
+ *       - FAVORITES
  */
 router.route("/users/:id/favorites/add").post(userController.addOneFavorite);
 
@@ -252,7 +252,7 @@ router.route("/users/:id/favorites/add").post(userController.addOneFavorite);
  *       500:
  *         description: Internal Server Error.
  *     tags:
- *       - Users
+ *       - FAVORITES
  */
 router.route("/users/:id/favorites/remove").delete(userController.removeOneFavorite);
 
@@ -304,10 +304,49 @@ router.route("/users/:id/favorites/remove").delete(userController.removeOneFavor
  *               success: false
  *               message: Internal Server Error
  *     tags:
- *       - Users
+ *       - VEGETARIAN
  */
 router.route("/users/:id/vegetarian/update").post(userController.updateVegetarianField);
 
+/**
+ * @openapi
+ * /users/{id}/vegetarian:
+ *   get:
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to get the vegetarian status.
+ *     summary: Get the vegetarian status for a user.
+ *     description: Retrieves the vegetarian status for the user with the provided id.
+ *     responses:
+ *       200:
+ *         description: The vegetarian status for the user.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data: true
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: User not found
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: Internal Server Error
+ *     tags:
+ *       - VEGETARIAN
+ */
+router.route("/users/:id/vegetarian").get(userController.getVegetarianStatus);
 
 
 
@@ -352,7 +391,7 @@ router.route("/users/:id/vegetarian/update").post(userController.updateVegetaria
  *               success: false
  *               message: Internal Server Error
  *     tags:
- *       - Users
+ *       - PROGRAM
  */
 router.route("/users/:id/program").get(userController.getAllProgram);
 
@@ -409,7 +448,7 @@ router.route("/users/:id/program").get(userController.getAllProgram);
  *               success: false
  *               message: Internal Server Error
  *     tags:
- *       - Users
+ *       - PROGRAM
  */
 router.route("/users/:id/program/add").post(userController.addProgramDate);
 
@@ -460,7 +499,7 @@ router.route("/users/:id/program/add").post(userController.addProgramDate);
  *               success: false
  *               message: Internal Server Error
  *     tags:
- *       - Users
+ *       - PROGRAM
  */
 router.route("/users/:id/program/remove").post(userController.deleteProgramDate);
 
@@ -514,7 +553,7 @@ router.route("/users/:id/program/remove").post(userController.deleteProgramDate)
  *               success: false
  *               message: Internal Server Error
  *     tags:
- *       - Users
+ *       - PROGRAM
  */
 router.route("/users/:id/program/update").post(userController.updateProgramDate);
 
