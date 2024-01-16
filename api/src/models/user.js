@@ -1,39 +1,59 @@
 import mongoose from 'mongoose';
-import validator  from 'validator';
-import bcrypt from  'bcryptjs';
+import validator from 'validator';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { config } from "dotenv";
 
 config();
 const token_key = process.env.TOKEN_KEY;
 
-
-
 const userSchema = new mongoose.Schema({
-    username: { 
-        type: String, 
-        required: true, 
-        unique: true 
-    },
-    email: { 
-        type: String, 
-        required: true, 
-        unique: true,
-        validate(v){
-            if(!validator.isEmail(v)) throw new Error('Invalid e-mail!');
-        }
-    },
-    password: { 
-        type: String, 
+    username: {
+        type: String,
         required: true,
-        validate(v){
-            if(!validator.isLength(v, {min: 4, max: 20} )) throw new Error('The password must be between 4 and 20 characters long!');
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        validate(v) {
+            if (!validator.isEmail(v)) throw new Error('Invalid e-mail!');
         }
+    },
+    password: {
+        type: String,
+        required: true,
+        validate(v) {
+            if (!validator.isLength(v, { min: 4, max: 20 })) throw new Error('The password must be between 4 and 20 characters long!');
+        }
+    },
+    favorites: [{
+        type : String 
+    }],
+    vegetarian: {
+        type: Boolean,
+        default: false,
+    },
+    program: {
+        type: [
+            {
+                id: {
+                    type:String,
+                    required: true,
+                },
+                date: {
+                    type: Date,
+                    required: true,
+                }
+            }
+        ],
+        default: [],
     }
 });
 
-userSchema.pre('save', async function (){
-    if(this.isModified('password')) 
+userSchema.pre('save', async function () {
+    if (this.isModified('password'))
         this.password = await bcrypt.hash(this.password, 8);
 });
 
@@ -117,7 +137,7 @@ export const updateUser = async (id, newData) => {
 export const findUser = async (email, password) => {
     try {
         const user = await User.findOne({ email: email });
-        if (!user) 
+        if (!user)
             return { success: false, message: 'User not found' };
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid)
@@ -125,8 +145,173 @@ export const findUser = async (email, password) => {
 
         const token = jwt.sign({ userId: user._id }, token_key);
         return { success: true, data: user, token: token };
-    }catch(error){
+    } catch (error) {
         return { success: false, message: 'User not found ' + error };
     }
 };
+
+export const getFavorites = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user)
+            return { success: false, message: 'User not found' };
+        return { success: true, data: user.favorites };
+    }catch {
+        return { success: false, message: 'User not found ' + error };
+    }
+}
+
+export const addFavorite = async (userId, body) => {
+    const itemId = body.favoriteId;
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return { success: false, message: 'User not found' };
+        }
+        user.favorites.push(itemId);
+        const userUpdate = await User.findByIdAndUpdate(userId, { favorites: user.favorites }, { new: true });
+        return { success: true, data: userUpdate.favorites };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+export const removeFavorite = async (userId,body) =>{
+    const itemId = body.favoriteId; // Assuming itemId is sent in the request body
+    try {
+        const user = await User.findById(userId);
+        if (!user)
+            return { success: false, message: 'User not found' };
+        // Add the itemId to favorites
+        user.favorites = user.favorites.filter(favId => favId.toString() !== itemId);
+        const userUpdate = await User.findByIdAndUpdate(userId, { favorites: user.favorites }, { new: true });
+        return { success: true, data: userUpdate.favorites };
+    }catch {
+        return { success: false, message: 'User not found ' + error };
+    }
+}
+
+export const getVegetarian = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user)
+            return { success: false, message: 'User not found' };
+        return { success: true, data: user.vegetarian };
+    }catch {
+        return { success: false, message: 'User not found ' + error };
+    }
+}
+// Function to update the vegetarian field
+export const updateVegetarian = async (userId, isVegetarian) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            { _id: userId },
+            { $set: { vegetarian: isVegetarian } },
+            { new: true }
+        );
+        if (!user) {
+            return { success: false, message: 'User not found' };
+        }
+        return { success: true, data: { vegetarian: user.vegetarian } };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+
+// Function to get the program for a user
+export const getProgram = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return { success: false, message: 'User not found' };
+        }
+        return { success: true, data: user.program };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+// // Function to add a date to the program
+// export const createProgramDate = async (userId, programDate) => {
+//     try {
+//         const updatedUser = await User.findOneAndUpdate(
+//             { _id: userId },
+//             { $push: { program: programDate } },
+//             { new: true }
+//         );
+
+//         if (!updatedUser) {
+//             return { success: false, message: 'User not found' };
+//         }
+
+//         return { success: true, data: updatedUser.program };
+//     } catch (error) {
+//         console.error(error);
+//         return { success: false, message: 'Internal Server Error' };
+//     }
+// };
+// Function to create a program date
+export const createProgramDate = async (userId, programDate) => {
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId, 'program.date': { $ne: programDate.date } },
+            { $addToSet: { program: { $each: [programDate] } } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return { success: false, message: 'User not found or program date already exists' };
+        }
+
+        return { success: true, data: updatedUser.program };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+
+// Function to remove a date from the program
+export const removeProgramDate = async (userId, programDateId) => {
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId },
+            { $pull: { program: { id: programDateId } } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return { success: false, message: 'User not found' };
+        }
+
+        return { success: true, data: updatedUser.program };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+// Function to modify a date in the program
+export const modifyProgramDate = async (userId, programDateId, newDate) => {
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId, 'program.id': programDateId },
+            { $set: { 'program.$.date': newDate } },
+            { new: true }
+        );
+        if (!updatedUser) {
+            return { success: false, message: 'User or program date not found' };
+        }
+        return { success: true, data: updatedUser.program };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+
 

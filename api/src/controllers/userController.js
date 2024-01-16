@@ -5,7 +5,17 @@ import {
   getUserById,
   getUserByUsername,
   updateUser,
-  findUser
+  findUser,
+  getFavorites,
+  addFavorite,
+  removeFavorite,
+  getVegetarian,
+  updateVegetarian,
+  createProgramDate,
+  removeProgramDate,
+  modifyProgramDate,
+  getProgram
+
 } from '../models/user.js';
 
 
@@ -67,5 +77,109 @@ export const loginUser = async (req, res) => {
     res.status(user.success ? 200 : 404).json(user);
   } catch (error) {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+
+export const getAllFavorites = async (req, res) => {
+  try {
+    const favorites = await getFavorites(req.params.id);
+    res.status(favorites.success ? 200 : 404).json(favorites);
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+export const addOneFavorite = async (req, res) => {
+  try {
+    const favorites = await addFavorite(req.params.id,req.body);
+    res.status(favorites.success ? 200 : 404).json(favorites);
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+export const removeOneFavorite = async (req, res) => {
+  try {
+    const favorites = await removeFavorite(req.params.id,req.body);
+    res.status(favorites.success ? 200 : 404).json(favorites);
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+// Controller function to update the vegetarian field
+export const getVegetarianStatus = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const result = await getVegetarian(id);
+      res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+// Controller function to update the vegetarian field
+export const updateVegetarianField = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { isVegetarian } = req.body;
+
+        const result = await updateVegetarian(id, isVegetarian);
+        res.status(result.success ? 200 : 404).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+export const addProgramDate = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { programDate } = req.body;
+
+      const result = await createProgramDate(id, programDate);
+      res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+export const deleteProgramDate = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { programDateId } = req.body;
+      const result = await removeProgramDate(id, programDateId);
+      res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+
+export const updateProgramDate = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const {  programDateId, newDate } = req.body;
+
+      const result = await modifyProgramDate(id, programDateId,newDate);
+      res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+export const getAllProgram = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const result = await getProgram(id);
+      res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };

@@ -30,6 +30,7 @@ services:
     environment:
       - MONGO_URI=mongodb://mongodb:27017/
       - MONGO_DB=repas
+      - TOKEN_KEY=testazertyuiop
     depends_on:
       - mongodb
 
