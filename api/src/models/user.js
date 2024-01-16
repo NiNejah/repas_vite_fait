@@ -53,7 +53,6 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', async function () {
-    console.log("10101010101010101010101010101010101010101010101");
     if (this.isModified('password'))
         this.password = await bcrypt.hash(this.password, 8);
 });
@@ -162,21 +161,21 @@ export const getFavorites = async (userId) => {
     }
 }
 
-export const addFavorite = async (userId,body) =>{
-    const itemId = body.favoriteId; // Assuming itemId is sent in the request body
+export const addFavorite = async (userId, body) => {
+    const itemId = body.favoriteId;
     try {
         const user = await User.findById(userId);
-        if (!user)
+        if (!user) {
             return { success: false, message: 'User not found' };
+        }
         user.favorites.push(itemId);
-        console.log("ggggggggggggggggggggggggggg");
-        await user.save();
-        return { success: true, data: user.favorites };
-    }catch (error) {
-        console.error(error); // Log the error for debugging
-        return { success: false, message: 'User not found ' + error };
+        const userUpdate = await User.findByIdAndUpdate(userId, { favorites: user.favorites }, { new: true });
+        return { success: true, data: userUpdate.favorites };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
     }
-}
+};
 
 export const removeFavorite = async (userId,body) =>{
     const itemId = body.favoriteId; // Assuming itemId is sent in the request body
@@ -186,9 +185,123 @@ export const removeFavorite = async (userId,body) =>{
             return { success: false, message: 'User not found' };
         // Add the itemId to favorites
         user.favorites = user.favorites.filter(favId => favId.toString() !== itemId);
-        await user.save();
-        return { success: true, data: user.favorites };
+        const userUpdate = await User.findByIdAndUpdate(userId, { favorites: user.favorites }, { new: true });
+        return { success: true, data: userUpdate.favorites };
     }catch {
         return { success: false, message: 'User not found ' + error };
     }
-} 
+}
+
+// Function to update the vegetarian field
+export const updateVegetarian = async (userId, isVegetarian) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            { _id: userId },
+            { $set: { vegetarian: isVegetarian } },
+            { new: true }
+        );
+        if (!user) {
+            return { success: false, message: 'User not found' };
+        }
+        return { success: true, data: { vegetarian: user.vegetarian } };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+
+// Function to get the program for a user
+export const getProgram = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return { success: false, message: 'User not found' };
+        }
+        return { success: true, data: user.program };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+// // Function to add a date to the program
+// export const createProgramDate = async (userId, programDate) => {
+//     try {
+//         const updatedUser = await User.findOneAndUpdate(
+//             { _id: userId },
+//             { $push: { program: programDate } },
+//             { new: true }
+//         );
+
+//         if (!updatedUser) {
+//             return { success: false, message: 'User not found' };
+//         }
+
+//         return { success: true, data: updatedUser.program };
+//     } catch (error) {
+//         console.error(error);
+//         return { success: false, message: 'Internal Server Error' };
+//     }
+// };
+// Function to create a program date
+export const createProgramDate = async (userId, programDate) => {
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId, 'program.date': { $ne: programDate.date } },
+            { $addToSet: { program: { $each: [programDate] } } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return { success: false, message: 'User not found or program date already exists' };
+        }
+
+        return { success: true, data: updatedUser.program };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+
+// Function to remove a date from the program
+export const removeProgramDate = async (userId, programDateId) => {
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId },
+            { $pull: { program: { id: programDateId } } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return { success: false, message: 'User not found' };
+        }
+
+        return { success: true, data: updatedUser.program };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+// Function to modify a date in the program
+export const modifyProgramDate = async (userId, programDateId, newDate) => {
+    try {
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: userId, 'program.id': programDateId },
+            { $set: { 'program.$.date': newDate } },
+            { new: true }
+        );
+        if (!updatedUser) {
+            return { success: false, message: 'User or program date not found' };
+        }
+        return { success: true, data: updatedUser.program };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+
+
+
