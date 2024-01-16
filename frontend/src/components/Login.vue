@@ -2,9 +2,9 @@
 import { api } from '../../http-api';
 import { reactive } from 'vue';
 import router from '../router/index';
-import { useUserStore } from '../stores/userStore';
-
+import { useUserStore } from "../stores/userStore";
 const store = useUserStore();
+
 
 const data = reactive({
   email: '',
@@ -21,10 +21,11 @@ const login = async () => {
   try {
     data.loading = true;
     const response = await api.login(userData);
-    console.log(response);
+    //console.log(response);
     data.errorMessage =''
-    store.setUser(response.data);
     store.connect();
+    store.setUser(response);
+    // console.log(store.connected);
     router.push({ name: 'home'});//todo
   } catch (error) {
     data.loading = false;
