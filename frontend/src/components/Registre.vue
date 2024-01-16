@@ -1,6 +1,8 @@
 <script setup>
 import { api } from '../../http-api';
 import { reactive } from 'vue';
+import router from '../router/index';
+import { useUserStore } from '../stores/userStore';
 
 const user = reactive({
   username: '',
@@ -8,6 +10,7 @@ const user = reactive({
   password: ''
 });
 
+const store = useUserStore();
 let submitted = false;
 let successful = false;
 let message =  '';
@@ -22,12 +25,13 @@ const register = async () => {
     console.log(userData);
     const response = await api.addUser(userData);
     console.log(response.data);
-    message = 'user created succefult!';
     successful = true;
+    message = 'user created successfully!';
+    router.push({name: 'home'});
   } catch (error) {
     console.error(error.message);
-    message = 'failed to created user!';
     successful = false;
+    message = 'failed to created user!';
   }
 };
 </script>
@@ -54,7 +58,7 @@ const register = async () => {
                             class="form-control" name="password" />
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary btn-block">Sign Up</button>
+                        <button class="btn btn-primary btn-block" type="submit">Sign Up</button>
                     </div>
                 </div>
             </form>
