@@ -99,7 +99,7 @@ const search = () => {
       </div>
     </div>
 
-    <div class="flex items-center justify-center space-x-2 search">
+    <!-- <div class="flex items-center justify-center space-x-2 search">
       <input
         v-model="searchQuery"
         type="text"
@@ -112,10 +112,21 @@ const search = () => {
       >
       Search
       </button>
-    <div id="search">
-      <input v-model="searchQuery" class="searchBar" type="search" placeholder="Add an ingredient to your list">
+    </div> -->
+    <div class="flex items-center justify-center space-x-2 search">
+      <input v-model="searchQuery" 
+        class="border p-2 rounded focus:outline-none focus:ring focus:border-blue-300 w-full md:w-3/4 lg:w-1/2" 
+        type="text" 
+        placeholder="Add an ingredient to your list"
+      >
       <b-button variant="warning" @click="addKeyword">+</b-button>
-      <b-button variant="success" @click="searchRecipes">Search</b-button>
+      <!-- <b-button variant="success" @click="searchRecipes">Search</b-button> -->
+      <button
+        @click="searchRecipes"
+        class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300"
+      >
+      Search
+      </button>
     </div>
     <div id="checkboxes">
       <div class="checkbox">
