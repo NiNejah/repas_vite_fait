@@ -1,11 +1,14 @@
 <script setup>
 import { useUserStore } from './stores/userStore';
-
-const store = useUserStore();
+import Navbar from  './components/Navbar.vue'
+// const store = useUserStore();
 </script>
 
 <template>
-  <div class="flex h-screen bg-gray-100">
+  <div class="bg-green-400 h-screen">
+    <Navbar/>
+  </div>
+  <!-- <div class="flex h-screen bg-gray-100">
     <div class="w-64 bg-gray-800 text-white">
       <div class="p-4">
         <h1 class="text-xl font-bold">RepasViteFait</h1>
@@ -23,7 +26,7 @@ const store = useUserStore();
     <div class="flex-1">
       <router-view />
     </div>
-  </div>
+  </div> -->
 </template>
 
 <style scoped>
