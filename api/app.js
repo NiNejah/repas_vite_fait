@@ -4,7 +4,7 @@ import router  from "./src/routes/index.js";
 import { config } from "dotenv";
 import swaggerJsDoc from 'swagger-jsdoc';
 import { serve, setup } from 'swagger-ui-express';
-
+import cors from 'cors';
 config();
 const host = process.env.HOST;
 const port = process.env.PORT;
@@ -31,11 +31,11 @@ const options = {
 }
 
 const openapiSpecification = swaggerJsDoc(options);
-
+app.use(cors())
 app.use(express.json())
-app.use('/api', router);
+app.use('/', router);
 app.use('/docs', serve, setup(openapiSpecification));
 
 app.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`)
+    console.log(`---------------------------------------------------------- Server is running on http://${host}:${port}`)
 });

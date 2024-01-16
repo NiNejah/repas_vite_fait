@@ -12,7 +12,7 @@
 
 
 curl -X 'PUT' \
-  'http://localhost:8080/api/users/65971024d54b3bab2e2a99a6' \
+  'http://localhost:3000/api/users/65971024d54b3bab2e2a99a6' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk3MTAyNGQ1NGIzYmFiMmUyYTk5YTYiLCJpYXQiOjE3MDQ0NTQwMTd9.S8zcR9uitbrJ8hd1dz0vrKNfDY4rnYcwbcVBqyI1BT4' \
