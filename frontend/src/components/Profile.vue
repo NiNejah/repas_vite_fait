@@ -8,9 +8,9 @@ onMounted(() => {
     if (store && store.user) {
         console.log(store.user.data);
         user.value = {
-            name: store.user.data.username,
-            email: store.user.data.email,
-            vegetarian: store.user.data.vegetarian,
+            name: store.userName,
+            email: store.userMail,
+            vegetarian: store.userVegetarian,
         };
     }
 })
