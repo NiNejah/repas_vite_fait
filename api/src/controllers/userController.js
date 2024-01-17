@@ -11,6 +11,10 @@ import {
   removeFavorite,
   getVegetarian,
   updateVegetarian,
+  getPorkFree,
+  updatePorkFree,
+  getPeanutFree,
+  updatePeanutFree,
   createProgramDate,
   removeProgramDate,
   modifyProgramDate,
@@ -127,6 +131,54 @@ export const updateVegetarianField = async (req, res) => {
         const { isVegetarian } = req.body;
 
         const result = await updateVegetarian(id, isVegetarian);
+        res.status(result.success ? 200 : 404).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+export const getPeanutFreeStatus = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const result = await getPeanutFree(id);
+      res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+// Controller function to update the PeanutFree field
+export const updatePeanutFreeField = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { isPeanutFree } = req.body;
+
+        const result = await updatePeanutFree(id, isPeanutFree);
+        res.status(result.success ? 200 : 404).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+export const getPorkFreeStatus = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const result = await getPorkFree(id);
+      res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+// Controller function to update the PorkFree field
+export const updatePorkFreeField = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { isPorkFree } = req.body;
+
+        const result = await updatePorkFree(id, isPorkFree);
         res.status(result.success ? 200 : 404).json(result);
     } catch (error) {
         console.error(error);

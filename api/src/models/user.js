@@ -35,6 +35,14 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    peanutFree: {
+        type: Boolean,
+        default: false,
+    },
+    porkFree: {
+        type: Boolean,
+        default: false,
+    },
     program: {
         type: [
             {
@@ -221,7 +229,60 @@ export const updateVegetarian = async (userId, isVegetarian) => {
         return { success: false, message: 'Internal Server Error' };
     }
 };
-
+export const getPeanutFree = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user)
+            return { success: false, message: 'User not found' };
+        return { success: true, data: user.peanutFree };
+    }catch {
+        return { success: false, message: 'User not found ' + error };
+    }
+}
+// Function to update the PeanutFree field
+export const updatePeanutFree = async (userId, isPeanutFree) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            { _id: userId },
+            { $set: { peanutFree: isPeanutFree } },
+            { new: true }
+        );
+        if (!user) {
+            return { success: false, message: 'User not found' };
+        }
+        return { success: true, data: { peanutFree: user.peanutFree } };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
+export const getPorkFree = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user)
+            return { success: false, message: 'User not found' };
+        return { success: true, data: user.porkFree };
+    }catch {
+        return { success: false, message: 'User not found ' + error };
+    }
+}
+// Function to update the porkFree field
+export const updatePorkFree = async (userId, isPorkFree) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            { _id: userId },
+            { $set: { porkFree: isPorkFree } },
+            { new: true }
+        );
+        if (!user) {
+            return { success: false, message: 'User not found' };
+        }
+        return { success: true, data: { porkFree: user.porkFree } };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal Server Error' };
+    }
+};
 
 // Function to get the program for a user
 export const getProgram = async (userId) => {
@@ -237,26 +298,6 @@ export const getProgram = async (userId) => {
     }
 };
 
-// // Function to add a date to the program
-// export const createProgramDate = async (userId, programDate) => {
-//     try {
-//         const updatedUser = await User.findOneAndUpdate(
-//             { _id: userId },
-//             { $push: { program: programDate } },
-//             { new: true }
-//         );
-
-//         if (!updatedUser) {
-//             return { success: false, message: 'User not found' };
-//         }
-
-//         return { success: true, data: updatedUser.program };
-//     } catch (error) {
-//         console.error(error);
-//         return { success: false, message: 'Internal Server Error' };
-//     }
-// };
-// Function to create a program date
 export const createProgramDate = async (userId, programDate) => {
     try {
         const updatedUser = await User.findOneAndUpdate(
