@@ -304,7 +304,7 @@ router.route("/users/:id/favorites/remove").delete(userController.removeOneFavor
  *               success: false
  *               message: Internal Server Error
  *     tags:
- *       - VEGETARIAN
+ *       - Allergic
  */
 router.route("/users/:id/vegetarian/update").post(userController.updateVegetarianField);
 
@@ -344,11 +344,189 @@ router.route("/users/:id/vegetarian/update").post(userController.updateVegetaria
  *               success: false
  *               message: Internal Server Error
  *     tags:
- *       - VEGETARIAN
+ *       - Allergic
  */
 router.route("/users/:id/vegetarian").get(userController.getVegetarianStatus);
 
+/**
+ * @openapi
+ * /users/{id}/peanutFree/update:
+ *   post:
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to update the PeanutFree field.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               isPeanutFree:
+ *                 type: boolean
+ *     summary: Update the PeanutFree field of a user.
+ *     description: Updates the PeanutFree field of the user with the provided id.
+ *     responses:
+ *       200:
+ *         description: The updated user with the new value of the PeanutFree field.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data:
+ *                 PeanutFree: true
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: User not found
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: Internal Server Error
+ *     tags:
+ *       - Allergic
+ */
+router.route("/users/:id/peanutFree/update").post(userController.updatePeanutFreeField);
 
+/**
+ * @openapi
+ * /users/{id}/peanutFree:
+ *   get:
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to get the PeanutFree status.
+ *     summary: Get the PeanutFree status for a user.
+ *     description: Retrieves the PeanutFree status for the user with the provided id.
+ *     responses:
+ *       200:
+ *         description: The PeanutFree status for the user.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data: true
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: User not found
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: Internal Server Error
+ *     tags:
+ *       - Allergic
+ */
+router.route("/users/:id/peanutFree").get(userController.getPeanutFreeStatus);
+
+/**
+ * @openapi
+ * /users/{id}/porkFree/update:
+ *   post:
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to update the PorkFree field.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               isPorkFree:
+ *                 type: boolean
+ *     summary: Update the PorkFree field of a user.
+ *     description: Updates the PorkFree field of the user with the provided id.
+ *     responses:
+ *       200:
+ *         description: The updated user with the new value of the PorkFree field.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data:
+ *                 PorkFree: true
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: User not found
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: Internal Server Error
+ *     tags:
+ *       - Allergic
+ */
+router.route("/users/:id/porkFree/update").post(userController.updatePorkFreeField);
+
+/**
+ * @openapi
+ * /users/{id}/porkFree:
+ *   get:
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the user to get the PorkFree status.
+ *     summary: Get the PorkFree status for a user.
+ *     description: Retrieves the PorkFree status for the user with the provided id.
+ *     responses:
+ *       200:
+ *         description: The PorkFree status for the user.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data: true
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: User not found
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: Internal Server Error
+ *     tags:
+ *       - Allergic
+ */
+router.route("/users/:id/porkFree").get(userController.getPorkFreeStatus);
 
 // ************************************************ PROGRAM : 
 /**
