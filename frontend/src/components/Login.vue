@@ -25,7 +25,7 @@ const login = async () => {
     data.errorMessage =''
     store.connect();
     store.setUser(response);
-    // console.log(store.connected);
+    // console.log(store.userToken);
     router.push({ name: 'home'});//todo
   } catch (error) {
     data.loading = false;

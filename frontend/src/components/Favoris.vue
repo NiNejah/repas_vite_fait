@@ -13,7 +13,7 @@ onMounted( async () => {
     try {
         pageStore.joinFavoritePage();
         const responseUser = await api.getFavorites(userStore.userId);
-        console.log(responseUser.data);
+        // console.log(responseUser.data);
         await fetchRecipes(responseUser.data);
     } catch (error) {
         console.error('Failed to fetch favourite recipes: ', error);
@@ -42,7 +42,7 @@ const fetchRecipes = async (uriList) => {
 }
 
 const handleFavoriteDeleted = (recipeId) => {
-    console.log(recipeId);
+    // console.log(recipeId);
     recipes.value = recipes.value.filter(recipe => recipe.uri !== recipeId);
 }
 
