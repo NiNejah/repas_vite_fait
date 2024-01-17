@@ -8,7 +8,7 @@ export const useUserStore = defineStore('user', () => {
     const userInfo = computed(() => user.value);
     const userId = computed(() => user.value?.data._id);
 
-    const userName = computed(() => user.value?.data._id);
+    const userName = computed(() => user.value?.data.username);
     const userMail = computed(() => user.value?.data.email);
     const userVegetarian = computed(() => user.value?.data.vegetarian);
 
