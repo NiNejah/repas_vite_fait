@@ -3,6 +3,7 @@ import Recipe from './Recipe.vue';
 import { useUserStore } from '../stores/userStore.js';
 import { usePageStore } from '../stores/pageStore.js';
 import { ref, computed, toRefs, onMounted } from 'vue';
+import router from '../router/index';
 import { api } from '../../http-api';
 
 const userStore = useUserStore();
@@ -11,6 +12,7 @@ const recipes = ref([]);
 
 onMounted( async () => {
     try {
+        if(!userStore.isConnected) router.push({ name: 'home'});
         pageStore.joinFavoritePage();
         const responseUser = await api.getFavorites(userStore.userId);
         console.log(responseUser.data);

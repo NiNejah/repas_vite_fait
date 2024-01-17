@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, toRefs, onMounted } from 'vue';
 import recipesList from '../data/recipes.js';
+import router from '../router/index';
 import Recipe from './Recipe.vue';
 import { useUserStore } from '../stores/userStore.js';
 import { usePageStore } from '../stores/pageStore';
@@ -51,6 +52,38 @@ const loadPrograms = async () => {
     }
     recipes.value = listRecipes;
 }
+
+const calculateCalories = () => {
+    let total = 0;
+    for(const recipe of recipes.value){
+        total += Math.round(recipe.calories / recipe.yield);
+    }
+    return total;
+}
+
+const calculateProtein = () => {
+    let total = 0;
+    for(const recipe of recipes.value){
+        total += recipe.totalDaily.PROCNT.quantity / recipe.yield;
+    }
+    return Math.round(total * 100) / 100;
+}
+
+const calculateFat = () => {
+    let total = 0;
+    for(const recipe of recipes.value){
+        total += recipe.totalDaily.FAT.quantity / recipe.yield;
+    }
+    return Math.round(total * 100) / 100;
+}
+
+const calculateCarb = () => {
+    let total = 0;
+    for(const recipe of recipes.value){
+        total += recipe.totalDaily.CHOCDF.quantity / recipe.yield;
+    }
+    return Math.round(total * 100) / 100;
+}
 </script>
 
 <template>
@@ -59,7 +92,16 @@ const loadPrograms = async () => {
         <div id="calendar">
             <VDatePicker :attributes="attributes" mode="date" v-model="selectedDate" expanded @change="loadPrograms"/>
             <button class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300" @click="loadPrograms">Check recipes</button>
+            <div class="nutrition" v-if="recipes.length > 0">
+                <h2>Nutritional stats: (for one serving per meal)</h2>
+                <div class="calories"><font-awesome-icon icon="bowl-food"/><p>CALORIES: {{ calculateCalories() }}</p></div>
+                <div class="calories"><font-awesome-icon icon="bowl-food" style="color: greenyellow"/><p>PROTEIN: {{ calculateProtein() }}%</p></div>
+                <div class="calories"><font-awesome-icon icon="bowl-food" style="color: orange"/><p>FAT: {{ calculateFat() }}%</p></div>
+                <div class="calories"><font-awesome-icon icon="bowl-food" style="color: red"/><p>CARB: {{ calculateCarb() }}%</p></div>
+                <p></p>
+            </div>
         </div>
+
         <div id="recipes">
             <div class="col-md-4">
                 <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
@@ -103,5 +145,22 @@ const loadPrograms = async () => {
 
 .recipe {
     width: 200%;
+}
+
+.nutrition {
+    margin-top: 10px;
+    font-size: 1.5vw;
+}
+
+.calories  {
+    text-align: center;
+}
+
+.calories * {
+    display: inline-block;
+}
+
+.calories p {
+    margin-left: 5px;
 }
 </style>
