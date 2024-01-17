@@ -26,5 +26,16 @@ export const useUserStore = defineStore('user', () => {
         connected.value = false;
     }
 
-    return { user, connected, userInfo, userId ,userName, userMail, userVegetarian, setUser, isConnected, connect, disconnect };
+    return {
+        user,
+        connected,
+        userInfo,
+        userId,
+        userName,
+        userMail,
+        userVegetarian,
+        setUser,
+        isConnected,
+        connect,
+        disconnect };
 });

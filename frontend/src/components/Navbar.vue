@@ -46,7 +46,7 @@ const signout = () => {
 </script>
 
 <template>
-    <div class="z-40 bg-gray-900 text-gray-100 py-3.5 px-6 shadow md:flex justify-between items-center">
+    <div class="z-100 bg-gray-900 text-gray-100 py-3.5 px-6 shadow md:flex justify-between items-center">
         <div class="flex items-center cursor-pointer">
             <span class="text-green-500 text-xl mr-5">
                 <font-awesome-icon icon="fa-utensils" /> 
