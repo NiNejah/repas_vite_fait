@@ -1,15 +1,21 @@
 <script setup >
-import { ref, computed, toRefs } from 'vue';
+import { ref, computed, toRefs, onMounted } from 'vue';
 import recipesList from '../data/recipes.js';
 import Recipe from './Recipe.vue';
 import { useUserStore } from '../stores/userStore.js';
+import { usePageStore } from '../stores/pageStore';
 
 const userStore = useUserStore();
+const pageStore = usePageStore();
 const { isConnected } = toRefs(userStore);
 const searchQuery = ref('');
 
 const recipes = ref([]);
 const keywords = ref([]);
+
+onMounted(() => {
+  pageStore.leaveFavoritePage();
+});
 
 const signout = () => {
   console.log("disconnected");

@@ -6,7 +6,7 @@ export const useUserStore = defineStore('user', () => {
     const connected = ref(false);
 
     const userInfo = computed(() => user.value);
-    const userId = computed(() => user.value?._id);
+    const userId = computed(() => user.value?.data._id);
 
     const setUser = (userData) => {
         user.value = userData;

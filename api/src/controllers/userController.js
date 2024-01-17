@@ -102,7 +102,7 @@ export const addOneFavorite = async (req, res) => {
 
 export const removeOneFavorite = async (req, res) => {
   try {
-    const favorites = await removeFavorite(req.params.id,req.body);
+    const favorites = await removeFavorite(req.params.id, req.body);
     res.status(favorites.success ? 200 : 404).json(favorites);
   } catch (error) {
     res.status(500).json({ success: false, message: 'Internal Server Error' });

@@ -21,10 +21,11 @@ import {
     faUserPlus,
     faSignInAlt,
     faSignOutAlt,
-    faCalendar
+    faCalendar,
+    faTrash
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faStar, faX, faCalendar);
+library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faStar, faX, faCalendar, faTrash);
 const app = createApp(App);
 app.component('font-awesome-icon', FontAwesomeIcon);
 

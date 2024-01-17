@@ -168,9 +168,11 @@ export const addFavorite = async (userId, body) => {
         if (!user) {
             return { success: false, message: 'User not found' };
         }
-        user.favorites.push(itemId);
-        const userUpdate = await User.findByIdAndUpdate(userId, { favorites: user.favorites }, { new: true });
-        return { success: true, data: userUpdate.favorites };
+        if(user.favorites.length < 5){
+            user.favorites.push(itemId);
+            const userUpdate = await User.findByIdAndUpdate(userId, { favorites: user.favorites }, { new: true });
+            return { success: true, data: userUpdate.favorites };
+        } else return { success: false, message: 'Maximum of favorites already reached' };
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal Server Error' };
