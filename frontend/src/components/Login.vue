@@ -2,6 +2,9 @@
 import { api } from '../../http-api';
 import { reactive } from 'vue';
 import router from '../router/index';
+import { useUserStore } from "../stores/userStore";
+const store = useUserStore();
+
 
 const data = reactive({
   email: '',
@@ -18,8 +21,11 @@ const login = async () => {
   try {
     data.loading = true;
     const response = await api.login(userData);
-    console.log(response);
+    //console.log(response);
     data.errorMessage =''
+    store.connect();
+    store.setUser(response);
+    // console.log(store.connected);
     router.push({ name: 'home'});//todo
   } catch (error) {
     data.loading = false;
@@ -54,7 +60,8 @@ const closeSigninAndOpenSginup = () =>{
                         <span>Login</span>
                     </button>
                 </div>
-                <a class="creatCompte" @click="closeSigninAndOpenSginup"> Vous n'avez pas un compte ? </a>
+                <router-link to="/registre" > Vous n'avez pas un compte ?</router-link>
+                <!-- <a class="creatCompte" @click="closeSigninAndOpenSginup"> Vous n'avez pas un compte ? </a> -->
                 <div class="form-group">
                     <div v-if="data.errorMessage" class="alert alert-danger" >{{ data.errorMessage }}</div>
                 </div>
