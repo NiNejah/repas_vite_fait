@@ -1,9 +1,9 @@
 <script setup >
-import { ref, computed, toRefs, onMounted } from 'vue';
-import recipesList from '../data/recipes.js';
+import { ref, toRefs, onMounted } from 'vue';
 import Recipe from './Recipe.vue';
 import { useUserStore } from '../stores/userStore.js';
 import { usePageStore } from '../stores/pageStore';
+import { api } from '../../http-api';
 
 const userStore = useUserStore();
 const pageStore = usePageStore();
@@ -39,22 +39,24 @@ const searchRecipes = async () => {
       if (document.getElementById("vegetarian").checked) health += "&health=vegetarian";
       if (document.getElementById("peanut").checked) health += "&health=peanut-free";
       if (document.getElementById("pork").checked) health += "&health=pork-free";
-      console.log(filters);
-      const response = await fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + filters
-        + "&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c" + health);
-      if (response.status === 200) {
-        //removeRecipesCards();
+      // console.log(filters);
+      // const response = await fetch("https://api.edamam.com/api/recipes/v2?type=public&q=" + filters
+      //   + "&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c" + health);
+      const body = {
+        filters: filters,
+        health: health
+      };
+      const response = await api.getRecipes(body);
+      // console.log(response);
 
-        const json = await response.json();
-        const jsonRecipes = json.hits;
-        let listRecipes = [];
-        for (const hit of jsonRecipes) {
-          const recipe = hit.recipe;
-          listRecipes.push(recipe);
-        }
-        recipes.value = listRecipes;
-        console.log(recipes.value);
+      const jsonRecipes = response.hits;
+      let listRecipes = [];
+      for (const hit of jsonRecipes) {
+        const recipe = hit.recipe;
+        listRecipes.push(recipe);
       }
+      recipes.value = listRecipes;
+      console.log(recipes.value);
     }
   } catch (error) {
     console.log(error);
@@ -132,7 +134,6 @@ const search = () => {
         </div>
       </div>
     </div>
-
 
     <div id="recipes">
       <div class="col-md-4">
