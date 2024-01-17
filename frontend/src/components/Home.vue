@@ -75,50 +75,51 @@ const search = () => {
 </script>
 
 <template>
-  <div id="app" class="bg-gray-100">
-    <div class="px-4 py-5 text-center bgr-home food ">
-      <h1 class="display-5 fw-bold home-title col-8 mx-auto"> Repas Vite Fait </h1>
+  <div id="app" class="text-green-700 outline-1 ">
+
+    <div class="px-4 py-5 text-center bgr-home food h-screen ">
+      <h1 class="display-5 fw-bold home-title col-8 mx-auto text-stroke text-stroke-white">Ingredient Alchemy: Discover
+        Your Desired Dish!</h1>
+      <!-- <h1 class="display-5 fw-bold home-title col-8 mx-auto text-stroke text-transparent">Ingredient Alchemy: Discover Your Desired Dish!</h1> -->
+      <!-- <h1 class="display-5 fw-bold home-title col-8 mx-auto"> Ingredient Alchemy: Discover Your Desired Dish!  </h1> -->
       <div class="col-lg-6 mx auto">
         <p class="lead mb-4"></p>
       </div>
-    </div>
 
-    <!-- <div class="flex items-center justify-center space-x-2 search">
-      <input
-        v-model="searchQuery"
-        type="text"
-        class="border p-2 rounded focus:outline-none focus:ring focus:border-blue-300 w-full md:w-3/4 lg:w-1/2"
-        placeholder="Search recipe..." />
-      <button @click="search"
-        class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300">
-        Search
-      </button>
-    </div> -->
-    <div class="flex items-center justify-center space-x-2 search">
-      <input v-model="searchQuery"
-        class="border p-2 rounded focus:outline-none focus:ring focus:border-blue-300 w-full md:w-3/4 lg:w-1/2"
-        type="text" placeholder="Add an ingredient to your list">
-      <b-button variant="warning" @click="addKeyword">+</b-button>
-      <!-- <b-button variant="success" @click="searchRecipes">Search</b-button> -->
-      <button @click="searchRecipes"
-        class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300">
-        Search
-      </button>
-    </div>
-    <div id="checkboxes">
 
-      <div class="checkbox">
-        <input type="checkbox" id="vegetarian" name="vegetarian" />
-        <label for="vegetarian">Vegetarian</label>
+
+
+      <div class=" md:m-5 mx-5 flex items-center justify-center space-x-2 search">
+        <input v-model="searchQuery"
+          class="border p-2 rounded focus:outline-none focus:ring focus:border-blue-300 w-full md:w-3/4 lg:w-1/2"
+          type="text" placeholder="Add an ingredient to your list">
+        <b-button variant="warning" @click="addKeyword">+</b-button>
+        <!-- <b-button variant="success" @click="searchRecipes">Search</b-button> -->
+        <button @click="searchRecipes"
+          class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300">
+          Search
+        </button>
       </div>
-      <div class="checkbox">
-        <input type="checkbox" id="peanut" name="peanut" />
-        <label for="peanut">Peanut-free</label>
+      <div class="item">
+        <ul class="list-inside space-y-2">
+          <li class="flex items-center">
+            <input type="checkbox" id="vegetarian" name="vegetarian"
+            class="form-checkbox text-indigo-600 focus:ring-indigo-500 h-4 w-4" />
+            <label for="vegetarian" class="ml-2">Vegetarian</label>
+          </li>
+          <li class="flex items-center">
+            <input type="checkbox" id="peanut" name="peanut"
+            class="form-checkbox text-indigo-600 focus:ring-indigo-500 h-4 w-4" />
+            <label for="peanut" class="ml-2">Peanut-free</label>
+          </li>
+          <li class="flex items-center">
+            <input type="checkbox" id="pork" name="pork"
+            class="form-checkbox text-indigo-600 focus:ring-indigo-500 h-4 w-4" />
+            <label for="pork" class="ml-2">Pork-free</label>
+          </li>
+        </ul>
       </div>
-      <div class="checkbox">
-        <input type="checkbox" id="pork" name="pork" />
-        <label for="pork">Pork-free</label>
-      </div>
+
     </div>
     <div id="keywords">
       <div class="keyword" v-for="keyword of keywords" :key="keyword">
@@ -134,6 +135,7 @@ const search = () => {
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -152,35 +154,10 @@ const search = () => {
   min-height: 14rem;
 }
 
-.bgr-home h1 {
-  color: white;
-}
 
-#app {
-  text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
-}
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  /* background-color: #333; */
-  background-color: #1d2834;
-}
 
-li {
-  float: right;
-}
 
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
 
 .error {
   color: red;
@@ -189,18 +166,7 @@ li a {
   margin-top: 1em;
 }
 
-#search {
-  margin-top: 20px;
-  display: inline;
-}
 
-.searchBar {
-  width: 50%;
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 20px;
-  margin-right: 10px;
-}
 
 .col-md-4 {
   display: inline-block;
@@ -241,5 +207,4 @@ li a {
 
 .checkbox * {
   margin-right: 5px;
-}
-</style>
+}</style>
