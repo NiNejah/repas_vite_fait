@@ -2,8 +2,29 @@ import NodeCache from 'node-cache';
  
 const EDAMAM_ID = "01c306cf";
 const EDAMAM_KEY = "6179f34f1acea7368bcd5d4020b90b0c";
+const REDIS_HOST = "redis";
+const REDIS_PORT = 6379;
 
 const apiCache = new NodeCache();
+
+import  redis from "redis";
+import Redis from 'ioredis';
+
+const  connect = () => {
+
+    const redisCache = redis.createClient(REDIS_PORT);
+    
+    redisCache.on("connect", () => {
+      console.log("Connected to Redis");
+    });
+
+    redisCache.on("error", () => {
+      console.error("Error in Redis Connection");
+    });
+    redisCache.setEx("test",3600,"val");
+    return redisCache;
+}
+connect();
 
 export const getRecipes = async (req, res) => {
     const cacheKey = req.body.filters + req.body.health;
