@@ -76,22 +76,6 @@ const search = () => {
 
 <template>
   <div id="app" class="bg-gray-100">
-    <nav>
-      <ul v-if="!isConnected">
-        <li>
-          <router-link to="/registre"><font-awesome-icon icon="user-plus" /> Sign Up</router-link>
-        </li>
-        <li>
-          <router-link to="/login"><font-awesome-icon icon="sign-in-alt" /> Login</router-link>
-        </li>
-      </ul>
-      <ul v-else>
-        <li>
-          <!-- <b-button class="button" variant="outline-secondary" @click="signout" >Sign Out</b-button> -->
-          <router-link to="" @click="signout"><font-awesome-icon icon="sign-out-alt" /> Sign Out</router-link>
-        </li>
-      </ul>
-    </nav>
     <div class="px-4 py-5 text-center bgr-home food ">
       <h1 class="display-5 fw-bold home-title col-8 mx-auto"> Repas Vite Fait </h1>
       <div class="col-lg-6 mx auto">
