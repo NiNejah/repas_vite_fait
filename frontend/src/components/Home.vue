@@ -11,12 +11,6 @@ const searchQuery = ref('');
 const recipes = ref([]);
 const keywords = ref([]);
 
-const signout = () => {
-  console.log("disconnected");
-  userStore.disconnect();
-  userStore.setUser(null);
-}
-
 const addKeyword = () => {
   if (searchQuery.value !== '') {
     keywords.value.push(searchQuery.value);
