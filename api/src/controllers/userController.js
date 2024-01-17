@@ -35,8 +35,22 @@ export const addUser = async (req, res) => {
 
 export const getUser = async (req, res) => {
   try {
-    const response = await getUserById(req.params.id);
-    res.status(response.success ? 200 : 404).json(response);
+    const key = `user${req.params.id}`;
+    const cachedData = await redis.get(key);
+    if (cachedData !== null) {
+      console.log('Cache hit:', cachedData);
+      // Parse cached data only if it exists
+      const parsedCachedData = JSON.parse(cachedData);
+      res.status(parsedCachedData.success ? 200 : 404).json(parsedCachedData);
+    } else {
+
+      const response = await getUserById(req.params.id);
+      console.log('Cache miss. Fetching data from the database:', response);
+      res.status(response.success ? 200 : 404).json(response);
+
+      // Update the cache with the fetched data
+      await redis.set(key, JSON.stringify(response));
+    }
   } catch (error) {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
@@ -115,7 +129,7 @@ export const getAllFavorites = async (req, res) => {
 
 export const addOneFavorite = async (req, res) => {
   try {
-    const favorites = await addFavorite(req.params.id,req.body);
+    const favorites = await addFavorite(req.params.id, req.body);
     res.status(favorites.success ? 200 : 404).json(favorites);
   } catch (error) {
     console.error(error); // Log the error for debugging
@@ -135,122 +149,174 @@ export const removeOneFavorite = async (req, res) => {
 // Controller function to update the vegetarian field
 export const getVegetarianStatus = async (req, res) => {
   try {
-      const { id } = req.params;
-      const result = await getVegetarian(id);
-      res.status(result.success ? 200 : 404).json(result);
+    const { id } = req.params;
+    const key = `vegetarian${id}`;
+    const cachedData = await redis.get(key);
+    if (cachedData !== null) {
+      console.log('Cache hit:', cachedData);
+      // Parse cached data only if it exists
+      const parsedCachedData = JSON.parse(cachedData);
+      res.status(parsedCachedData.success ? 200 : 404).json(parsedCachedData);
+    } else {
+
+      const response = await getVegetarian(id);
+      console.log('Cache miss. Fetching data from the database:', response);
+      res.status(response.success ? 200 : 404).json(response);
+
+      // Update the cache with the fetched data
+      await redis.set(key, JSON.stringify(response));
+    }
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 // Controller function to update the vegetarian field
 export const updateVegetarianField = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { isVegetarian } = req.body;
+  try {
+    const { id } = req.params;
+    const { isVegetarian } = req.body;
 
-        const result = await updateVegetarian(id, isVegetarian);
-        res.status(result.success ? 200 : 404).json(result);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'Internal Server Error' });
-    }
+    const result = await updateVegetarian(id, isVegetarian);
+    res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
 };
 
 export const getPeanutFreeStatus = async (req, res) => {
   try {
-      const { id } = req.params;
-      const result = await getPeanutFree(id);
-      res.status(result.success ? 200 : 404).json(result);
+    const { id } = req.params;
+    const key = `peanutFree${id}`;
+    const cachedData = await redis.get(key);
+    if (cachedData !== null) {
+      console.log('Cache hit:', cachedData);
+      // Parse cached data only if it exists
+      const parsedCachedData = JSON.parse(cachedData);
+      res.status(parsedCachedData.success ? 200 : 404).json(parsedCachedData);
+    } else {
+      const response = await getPeanutFree(id);
+      console.log('Cache miss. Fetching data from the database:', response);
+      res.status(response.success ? 200 : 404).json(response);
+      // Update the cache with the fetched data
+      await redis.set(key, JSON.stringify(response));
+    }
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 // Controller function to update the PeanutFree field
 export const updatePeanutFreeField = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { isPeanutFree } = req.body;
+  try {
+    const { id } = req.params;
+    const { isPeanutFree } = req.body;
 
-        const result = await updatePeanutFree(id, isPeanutFree);
-        res.status(result.success ? 200 : 404).json(result);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'Internal Server Error' });
-    }
+    const result = await updatePeanutFree(id, isPeanutFree);
+    res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
 };
 
 export const getPorkFreeStatus = async (req, res) => {
+
+
   try {
-      const { id } = req.params;
-      const result = await getPorkFree(id);
-      res.status(result.success ? 200 : 404).json(result);
+    const { id } = req.params;
+    const key = `porkFree${id}`;
+    const cachedData = await redis.get(key);
+    if (cachedData !== null) {
+      console.log('Cache hit:', cachedData);
+      // Parse cached data only if it exists
+      const parsedCachedData = JSON.parse(cachedData);
+      res.status(parsedCachedData.success ? 200 : 404).json(parsedCachedData);
+    } else {
+      const response = await getPorkFree(id);
+      console.log('Cache miss. Fetching data from the database:', response);
+      res.status(response.success ? 200 : 404).json(response);
+      // Update the cache with the fetched data
+      await redis.set(key, JSON.stringify(response));
+    }
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 // Controller function to update the PorkFree field
 export const updatePorkFreeField = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { isPorkFree } = req.body;
+  try {
+    const { id } = req.params;
+    const { isPorkFree } = req.body;
 
-        const result = await updatePorkFree(id, isPorkFree);
-        res.status(result.success ? 200 : 404).json(result);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'Internal Server Error' });
-    }
+    const result = await updatePorkFree(id, isPorkFree);
+    res.status(result.success ? 200 : 404).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
 };
 
 export const addProgramDate = async (req, res) => {
   try {
-      const { id } = req.params;
-      const { programDate } = req.body;
+    const { id } = req.params;
+    const { programDate } = req.body;
 
-      const result = await createProgramDate(id, programDate);
-      res.status(result.success ? 200 : 404).json(result);
+    const result = await createProgramDate(id, programDate);
+    res.status(result.success ? 200 : 404).json(result);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 
 export const deleteProgramDate = async (req, res) => {
   try {
-      const { id } = req.params;
-      const { programDateId } = req.body;
-      const result = await removeProgramDate(id, programDateId);
-      res.status(result.success ? 200 : 404).json(result);
+    const { id } = req.params;
+    const { programDateId } = req.body;
+    const result = await removeProgramDate(id, programDateId);
+    res.status(result.success ? 200 : 404).json(result);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 
 
 export const updateProgramDate = async (req, res) => {
   try {
-      const { id } = req.params;
-      const {  programDateId, newDate } = req.body;
+    const { id } = req.params;
+    const { programDateId, newDate } = req.body;
 
-      const result = await modifyProgramDate(id, programDateId,newDate);
-      res.status(result.success ? 200 : 404).json(result);
+    const result = await modifyProgramDate(id, programDateId, newDate);
+    res.status(result.success ? 200 : 404).json(result);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 
 export const getAllProgram = async (req, res) => {
   try {
-      const { id } = req.params;
-      const result = await getProgram(id);
-      res.status(result.success ? 200 : 404).json(result);
+    const { id } = req.params;
+    const key = `allProgram${id}`;
+    const cachedData = await redis.get(key);
+    if (cachedData !== null) {
+      console.log('Cache hit:', cachedData);
+      // Parse cached data only if it exists
+      const parsedCachedData = JSON.parse(cachedData);
+      res.status(parsedCachedData.success ? 200 : 404).json(parsedCachedData);
+    } else {
+      const response = await getProgram(id);
+      console.log('Cache miss. Fetching data from the database:', response);
+      res.status(response.success ? 200 : 404).json(response);
+      // Update the cache with the fetched data
+      await redis.set(key, JSON.stringify(response));
+    }
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };

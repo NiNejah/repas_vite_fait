@@ -6,7 +6,6 @@ import swaggerJsDoc from 'swagger-jsdoc';
 import { serve, setup } from 'swagger-ui-express';
 import cors from 'cors';
 import redis from './src/redis/redis.js'; // Import the redis instance directly if needed
-import {cacheMiddleware} from './src/redis/redis.js';
 
 config();
 const host = process.env.HOST;
@@ -36,16 +35,12 @@ const options = {
 const openapiSpecification = swaggerJsDoc(options);
 
 
-
-// app.use(cacheMiddleware);
-
 app.use(cors())
 app.use(express.json())
 app.use('/', router);
 app.use('/docs', serve, setup(openapiSpecification));
 app.use(cors());
 
-// app.use(cacheMiddleware);
 
 // Graceful shutdown: Close Redis client when the server is shut down
 process.on('SIGINT', async () => {
@@ -61,5 +56,5 @@ process.on('SIGINT', async () => {
 });
 
 app.listen(port, () => {
-    console.log(`---------------------------------------------------------- Server is running on`)
+    console.log(`Server is running on`)
 });
