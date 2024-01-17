@@ -5,7 +5,7 @@ const store = useUserStore();
 </script>
 
 <template>
-  <div class="bg-green-400 h-screen">
+  <div class="bg-gray-200">
     <Navbar :isConnected ="store.isConnected"/>
     <div class="flex-1">
       <router-view />

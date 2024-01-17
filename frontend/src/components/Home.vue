@@ -77,17 +77,18 @@ const search = () => {
 <template>
   <div id="app" class="text-green-700 outline-1 ">
 
-    <div class="px-4 py-5 text-center bgr-home food h-screen ">
-      <h1 class="display-5 fw-bold home-title col-8 mx-auto text-stroke text-stroke-white">Ingredient Alchemy: Discover
-        Your Desired Dish!</h1>
-      <!-- <h1 class="display-5 fw-bold home-title col-8 mx-auto text-stroke text-transparent">Ingredient Alchemy: Discover Your Desired Dish!</h1> -->
-      <!-- <h1 class="display-5 fw-bold home-title col-8 mx-auto"> Ingredient Alchemy: Discover Your Desired Dish!  </h1> -->
+    <div class="px-4 py-5 text-center bgr-home food h-screen">
+
+      <!-- <h1 class="display-5 fw-bold home-title col-8 mx-auto text-stroke text-stroke-white">
+        Ingredient Alchemy: Discover Your Desired Dish!
+      </h1> -->
+        <h1 class=" inline-block text-transparent bg-clip-text font-bold bg-gradient-to-r from-blue-500 via-yellow-500 to-green-500 border-blue-500  ">
+          Ingredient Alchemy: Discover Your Desired Dish!
+        </h1>
+
       <div class="col-lg-6 mx auto">
         <p class="lead mb-4"></p>
       </div>
-
-
-
 
       <div class=" md:m-5 mx-5 flex items-center justify-center space-x-2 search">
         <input v-model="searchQuery"
@@ -100,21 +101,22 @@ const search = () => {
           Search
         </button>
       </div>
-      <div class="item">
-        <ul class="list-inside space-y-2">
+
+      <div class="flex items-center justify-center text-white font-bold">
+        <ul class="list-inside">
           <li class="flex items-center">
             <input type="checkbox" id="vegetarian" name="vegetarian"
-            class="form-checkbox text-indigo-600 focus:ring-indigo-500 h-4 w-4" />
+              class="form-checkbox h-4 w-4" />
             <label for="vegetarian" class="ml-2">Vegetarian</label>
           </li>
           <li class="flex items-center">
             <input type="checkbox" id="peanut" name="peanut"
-            class="form-checkbox text-indigo-600 focus:ring-indigo-500 h-4 w-4" />
+              class="form-checkbox  h-4 w-4" />
             <label for="peanut" class="ml-2">Peanut-free</label>
           </li>
           <li class="flex items-center">
             <input type="checkbox" id="pork" name="pork"
-            class="form-checkbox text-indigo-600 focus:ring-indigo-500 h-4 w-4" />
+              class="form-checkbox h-4 w-4 "/>
             <label for="pork" class="ml-2">Pork-free</label>
           </li>
         </ul>
@@ -140,6 +142,9 @@ const search = () => {
 </template>
 
 <style scoped>
+h1 {
+  -webkit-text-stroke: 2px rgb(31, 41, 55);
+}
 .search {
   margin-top: 10rem;
 
@@ -207,4 +212,5 @@ const search = () => {
 
 .checkbox * {
   margin-right: 5px;
-}</style>
+}
+</style>
