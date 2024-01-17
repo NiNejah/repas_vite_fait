@@ -6,11 +6,12 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    proxy: {
-      '^/api/users': {
-        target: 'http://localhost:4000' 
-      }
-    }
+    watch: {
+      usePolling: true,
+    },
+    host: true, 
+    strictPort: true,
+    port:80,
   },
   plugins: [
     vue(),

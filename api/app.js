@@ -64,8 +64,9 @@ const cacheMiddleware = async (req, res, next) => {
 
 app.use(cacheMiddleware);
 
+app.use(cors())
 app.use(express.json())
-app.use('/api', router);
+app.use('/', router);
 app.use('/docs', serve, setup(openapiSpecification));
 app.use(cors());
 
@@ -84,6 +85,6 @@ process.on('SIGINT', async () => {
     }
 });
 
-app.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`)
+app.listen(port, () => {
+    console.log(`---------------------------------------------------------- Server is running on`)
 });
