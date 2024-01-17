@@ -22,7 +22,7 @@ import {
 
 } from '../models/user.js';
 
-
+import redis from '../redis/redis.js';
 
 export const addUser = async (req, res) => {
   try {
@@ -87,12 +87,31 @@ export const loginUser = async (req, res) => {
 
 export const getAllFavorites = async (req, res) => {
   try {
-    const favorites = await getFavorites(req.params.id);
-    res.status(favorites.success ? 200 : 404).json(favorites);
+    const key = `allFavorites${req.params.id}`;
+    const cachedData = await redis.get(key);
+
+    if (cachedData !== null) {
+      console.log('Cache hit:', cachedData);
+
+      // Parse cached data only if it exists
+      const parsedCachedData = JSON.parse(cachedData);
+      res.status(parsedCachedData.success ? 200 : 404).json(parsedCachedData);
+    } else {
+      const favorites = await getFavorites(req.params.id);
+      console.log('Cache miss. Fetching data from the database:', favorites);
+
+      // No need to parse favorites here, as it's not cached yet
+      res.status(favorites.success ? 200 : 404).json(favorites);
+
+      // Update the cache with the fetched data
+      await redis.set(key, JSON.stringify(favorites));
+    }
   } catch (error) {
+    console.error('Error in getAllFavorites:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
+
 
 export const addOneFavorite = async (req, res) => {
   try {

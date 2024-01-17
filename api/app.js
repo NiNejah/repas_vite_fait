@@ -5,22 +5,14 @@ import { config } from "dotenv";
 import swaggerJsDoc from 'swagger-jsdoc';
 import { serve, setup } from 'swagger-ui-express';
 import cors from 'cors';
-import Redis from 'ioredis';
+import redis from './src/redis/redis.js'; // Import the redis instance directly if needed
+import {cacheMiddleware} from './src/redis/redis.js';
 
 config();
 const host = process.env.HOST;
 const port = process.env.PORT;
 
-const redisPort = process.env.REDIS_PORT || 6379; // Default Redis port
-const redisHost = process.env.REDIS_HOST || "redis"; // Default Redis host
-
 const app = express();
-
-const redis = new Redis({
-    host: redisHost,
-    port: redisPort,
-});
-
 connectDb();
 
 const options = {
@@ -44,25 +36,8 @@ const options = {
 const openapiSpecification = swaggerJsDoc(options);
 
 
-// Middleware for caching
-const cacheMiddleware = async (req, res, next) => {
-    const key = req.originalUrl || req.url;
 
-    try {
-        const data = await redis.get(key);
-
-        if (data !== null) {
-            res.status(200).json(JSON.parse(data));
-        } else {
-            next();
-        }
-    } catch (error) {
-        console.error('Error in cacheMiddleware:', error);
-        next();
-    }
-};
-
-app.use(cacheMiddleware);
+// app.use(cacheMiddleware);
 
 app.use(cors())
 app.use(express.json())
@@ -70,7 +45,7 @@ app.use('/', router);
 app.use('/docs', serve, setup(openapiSpecification));
 app.use(cors());
 
-app.use(cacheMiddleware);
+// app.use(cacheMiddleware);
 
 // Graceful shutdown: Close Redis client when the server is shut down
 process.on('SIGINT', async () => {

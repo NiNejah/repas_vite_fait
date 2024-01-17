@@ -31,8 +31,11 @@ services:
       - MONGO_URI=mongodb://mongodb:27017/
       - MONGO_DB=repas
       - TOKEN_KEY=testazertyuiop
+      - REDIS_HOST=redis  # Add this line
+      - REDIS_PORT=6379   # Add this line
     depends_on:
       - mongodb
+      - redis
 
   mongodb:
     container_name: repas_mongo
@@ -42,6 +45,10 @@ services:
     volumes:
       - mongodb_data:/data/db
 
+  redis:
+    image: redis
+    ports:
+    - "6379:6379"
 volumes:
   mongodb_data:
 
