@@ -1,6 +1,10 @@
 <script setup>
 import {ref, defineProps} from 'vue';
+import { api } from '../../http-api';
 import { useUserStore } from '../stores/userStore.js';
+import { usePageStore } from '../stores/pageStore.js';
+
+const emit = defineEmits(['favorite-deleted']);
 
 const props = defineProps({
     id: String,
@@ -12,8 +16,37 @@ const props = defineProps({
     servings: Number
 });
 const userStore = useUserStore();
+const pageStore = usePageStore();
 
 const name = ref(props.name);
+
+const addFavoriteToUser = async (uri) => {
+    try {
+        //console.log(userStore.userId);
+        const body = {
+            favoriteId: uri
+        };
+        const response = await api.addFavorite(userStore.userId, body);
+        //console.log(response);
+    } catch (error){
+        console.error('Failed to add favourite to user: ', error);
+    }
+}
+
+const removeFavoriteFromUser = async (uri) => {
+    try {
+        console.log(userStore.userId);
+        const body = {
+            favoriteId: uri
+        };
+        console.log(body);
+        const response = await api.deleteFavorite(userStore.userId, body);
+        console.log(response);
+        emit('favorite-deleted', uri);
+    } catch (error){
+        console.error('Failed to add favourite to user: ', error);
+    }
+}
 
 </script>
 
@@ -21,7 +54,8 @@ const name = ref(props.name);
     <div class="card">
         <div class="header">
             <a v-bind:href="props.url" target="_blank"><h3>{{ props.name }}</h3></a>
-            <b-button class="favorite" v-if="userStore.isConnected"><font-awesome-icon icon="star"/> </b-button>
+            <b-button class="favorite" v-if="userStore.isConnected && !pageStore.inFavorite" @click="addFavoriteToUser(props.id)"><font-awesome-icon icon="star"/> </b-button>
+            <b-button class="favorite" v-if="userStore.isConnected && pageStore.inFavorite" @click="removeFavoriteFromUser(props.id)" variant="danger"><font-awesome-icon icon="trash"/> </b-button>
         </div>
         <div class="content">
             <div class="recipeImg">
