@@ -301,7 +301,13 @@ export const getProgram = async (userId) => {
 export const createProgramDate = async (userId, programDate) => {
     try {
         const updatedUser = await User.findOneAndUpdate(
-            { _id: userId, 'program.date': { $ne: programDate.date } },
+            { 
+                _id: userId,
+                $and: [
+                    { 'program.date': { $ne: programDate.date } },
+                    { 'program.id': { $ne: programDate.id } }
+                ]
+            },
             { $addToSet: { program: { $each: [programDate] } } },
             { new: true }
         );
@@ -316,6 +322,7 @@ export const createProgramDate = async (userId, programDate) => {
         return { success: false, message: 'Internal Server Error' };
     }
 };
+
 
 
 // Function to remove a date from the program
