@@ -1,7 +1,7 @@
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {library} from "@fortawesome/fontawesome-svg-core";
 
-
+{/* <i class="fa-solid fa-utensils"></i> */}
 import {
     faHome,
     faBars,
@@ -11,6 +11,7 @@ import {
     faSquarePollHorizontal,
     faClock,
 
+    faUtensils,
     faStar,
     faUser,
     faX,
@@ -32,6 +33,7 @@ library.add(
     faSquarePollHorizontal,
     faClock,
 
+    faUtensils,
     faStar,
     faUser,
     faX,
