@@ -8,6 +8,11 @@ export const useUserStore = defineStore('user', () => {
     const userInfo = computed(() => user.value);
     const userId = computed(() => user.value?.data._id);
 
+    const userName = computed(() => user.value?.data.username);
+    const userMail = computed(() => user.value?.data.email);
+    const userVegetarian = computed(() => user.value?.data.vegetarian);
+
+
     const setUser = (userData) => {
         user.value = userData;
     }
@@ -21,5 +26,16 @@ export const useUserStore = defineStore('user', () => {
         connected.value = false;
     }
 
-    return { user, connected, userInfo, userId, setUser, isConnected, connect, disconnect };
+    return {
+        user,
+        connected,
+        userInfo,
+        userId,
+        userName,
+        userMail,
+        userVegetarian,
+        setUser,
+        isConnected,
+        connect,
+        disconnect };
 });

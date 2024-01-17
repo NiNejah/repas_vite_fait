@@ -14,20 +14,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { Calendar } from 'v-calendar';
 import 'v-calendar/style.css';
+import FontAwesomeIcon from "./fontawesome-icons.js";
 
-import {
-    faHome,
-    faStar,
-    faUser,
-    faX,
-    faUserPlus,
-    faSignInAlt,
-    faSignOutAlt,
-    faCalendar,
-    faTrash
-} from '@fortawesome/free-solid-svg-icons';
 
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faStar, faX, faCalendar, faTrash);
 const app = createApp(App);
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.component('VCalendar', Calendar);

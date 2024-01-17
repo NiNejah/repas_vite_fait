@@ -7,11 +7,11 @@ onMounted(() => {
     const store = useUserStore();
     if (store && store.user) {
         console.log(store.user.data);
-        user.value = ref({
-            name: store.user.data.username,
-            email: store.user.data.email,
-            vegetarian: store.user.data.vegetarian,
-        });
+        user.value = {
+            name: store.userName,
+            email: store.userMail,
+            vegetarian: store.userVegetarian,
+        };
     }
 })
 

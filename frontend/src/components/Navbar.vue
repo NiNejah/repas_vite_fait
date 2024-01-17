@@ -46,32 +46,31 @@ const signout = () => {
 </script>
 
 <template>
-    <div class="bg-gray-900 text-gray-100 py-3.5 px-6 shadow md:flex justify-between items-center">
+    <div class="z-100 bg-gray-900 text-gray-100 py-3.5 px-6 shadow md:flex justify-between items-center">
         <div class="flex items-center cursor-pointer">
-            <span class="text-green-500 text-xl mr-1">
-                <!-- icon  -->
+            <span class="text-green-500 text-xl mr-5">
+                <font-awesome-icon icon="fa-utensils" /> 
             </span>
-            <h1 class="text-xl">Repas Vite Fait </h1>
+            <h1 class="text-xl" @click="navigateTo('/')">Repas Vite Fait </h1>
         </div>
 
         <span @click="MenuOpen()" class="absolute md:hidden right-6 top-1.5 cursor-pointer text-4x1">
-            o
+            <font-awesome-icon :icon="open? 'fa-xmark':'fa-bars'" /> 
         </span>
 
         <ul class="md:flex md:items-center md:px-0 px-6 md:pb-0 pb-10 md:static absolute 
-        bg-gray-900 md:w-auto w-full top-14 duration-700 ease-in" :class="[open?'left-0':'left-[-100%]']">
+        bg-gray-900 md:w-auto w-full top-14 duration-500 ease-in" :class="[open?'left-0':'left-[-100%]']">
             <li class="md:mx-4 md:my-0 my-6" v-for="l in mylinks" :key="l.name">
                 <a class="text-xl hover:text-green-500 text-white" :href="l.link" @click.prevent="() => navigateTo(l.link)">
                     {{ l.name }} 
                 </a>
             </li>
             <div v-if="!props.isConnected">
-                <Button @click="signup"><font-awesome-icon icon="user-plus" /> Sign Up </Button>
-                <Button @click="login" > <font-awesome-icon icon="sign-in-alt" /> Login </Button>
+                <Button @click="signup" class="md:mx-4 md:my-0 my-1 mx-1"><font-awesome-icon icon="user-plus" /> Sign Up </Button>
+                <Button @click="login" class="md:mx-4 md:my-0 my-1 mx-1" > <font-awesome-icon icon="sign-in-alt" /> Login </Button>
             </div>
-            <Button v-else @click="signout" > <font-awesome-icon icon="sign-out-alt" /> Sign Out</Button>
+            <Button v-else @click="signout" class="md:mx-4 md:my-0 my-1 mx-1" > <font-awesome-icon icon="sign-out-alt" /> Sign Out</Button>
         </ul>
-
     </div>
 </template>
 <style scoped>
