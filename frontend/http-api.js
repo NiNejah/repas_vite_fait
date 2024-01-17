@@ -19,5 +19,6 @@ export const api = {
   login: (body) => requests.post('users/login', body),
   addFavorite: (id, body) => requests.post(`users/${id}/favorites/add`, body),
   getFavorites: (id) => requests.get(`users/${id}/favorites`, {}),
-  deleteFavorite: (id, body) => requests.delete(`users/${id}/favorites/remove`, body)
+  deleteFavorite: (id, body) => requests.delete(`users/${id}/favorites/remove`, body),
+  addToSchedule: (id, body) => requests.post(`users/${id}/program/add`, body)
 };
