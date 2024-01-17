@@ -300,28 +300,33 @@ export const getProgram = async (userId) => {
 
 export const createProgramDate = async (userId, programDate) => {
     try {
-        const updatedUser = await User.findOneAndUpdate(
-            { 
-                _id: userId,
-                $and: [
-                    { 'program.date': { $ne: programDate.date } },
-                    { 'program.id': { $ne: programDate.id } }
-                ]
-            },
-            { $addToSet: { program: { $each: [programDate] } } },
-            { new: true }
-        );
+        const existingProgram = await User.findOne({
+            _id: userId,
+            'program.date': programDate.date,
+            'program.id': programDate.id
+        });
 
-        if (!updatedUser) {
-            return { success: false, message: 'User not found or program date already exists' };
+        if (!existingProgram) {
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: userId },
+                { $addToSet: { program: { $each: [programDate] } } },
+                { new: true }
+            );
+
+            if (!updatedUser) {
+                return { success: false, message: 'User not found' };
+            }
+
+            return { success: true, data: updatedUser.program };
+        } else {
+            return { success: false, message: 'Program date with the same date and id already exists' };
         }
-
-        return { success: true, data: updatedUser.program };
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal Server Error' };
     }
 };
+
 
 
 
