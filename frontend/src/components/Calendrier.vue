@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, toRefs, onMounted } from 'vue';
 import recipesList from '../data/recipes.js';
+import router from '../router/index';
 import Recipe from './Recipe.vue';
 import { useUserStore } from '../stores/userStore.js';
 import { usePageStore } from '../stores/pageStore';
