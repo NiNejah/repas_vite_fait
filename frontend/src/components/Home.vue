@@ -75,57 +75,65 @@ const search = () => {
 </script>
 
 <template>
-  <div id="app" class="bg-gray-100">
-    <div class="px-4 py-5 text-center bgr-home food ">
-      <h1 class="display-5 fw-bold home-title col-8 mx-auto"> Repas Vite Fait </h1>
-      <div class="col-lg-6 mx auto">
-        <p class="lead mb-4"></p>
+  <div id="app" class="bg-gray-200">
+
+    <div class="food flex items-center justify-center text-center bgr-home h-screen">
+
+      <div class="main grid justify-items-stretch">
+
+        <h1 class="text-5xl justify-self-end font-bold text-green-400 md:pb-20">
+          Ingredient Alchemy: Discover Your Desired Dish!
+        </h1>
+
+        <div class="search-item md:mx-5 mx-5  md:my-7 my-2">
+
+          <div id="keywords" class="justify-self-center md:my-7 my-2 flex flex-wrap items-center">
+            <div class="md:mx-1 mx-1 mb-2" v-for="keyword of keywords" :key="keyword">
+              <div class="flex items-center bg-yellow-500 px-2 pt-3 pb-0 rounded">
+                <p class="text-white font-bold flex items-center">{{ keyword }}
+                  <button class="delKeyword ml-2 text-red-600 hover:text-red-800 focus:outline-none focus:text-red-800"
+                    @click="deleteKeyword(keyword)">
+                    <font-awesome-icon icon="fa-xmark" />
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="flex items-center justify-center space-x-2 search">
+            <input v-model="searchQuery"
+              class="border p-2 rounded focus:outline-none focus:ring focus:border-blue-300 w-full md:w-3/4 lg:w-1/2"
+              type="text" placeholder="Add an ingredient to your list">
+            <b-button variant="warning" @click="addKeyword">+</b-button>
+            <button @click="searchRecipes"
+              class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300">
+              Search
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center text-white font-bold">
+          <ul class="list-inside">
+            <li class="flex items-center">
+              <input type="checkbox" id="vegetarian" name="vegetarian" class="form-checkbox h-4 w-4" />
+              <label for="vegetarian" class="ml-2">Vegetarian</label>
+            </li>
+            <li class="flex items-center">
+              <input type="checkbox" id="peanut" name="peanut" class="form-checkbox h-4 w-4" />
+              <label for="peanut" class="ml-2">Peanut-free</label>
+            </li>
+            <li class="flex items-center">
+              <input type="checkbox" id="pork" name="pork" class="form-checkbox h-4 w-4" />
+              <label for="pork" class="ml-2">Pork-free</label>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <!-- <div class="flex items-center justify-center space-x-2 search">
-      <input
-        v-model="searchQuery"
-        type="text"
-        class="border p-2 rounded focus:outline-none focus:ring focus:border-blue-300 w-full md:w-3/4 lg:w-1/2"
-        placeholder="Search recipe..." />
-      <button @click="search"
-        class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300">
-        Search
-      </button>
-    </div> -->
-    <div class="flex items-center justify-center space-x-2 search">
-      <input v-model="searchQuery"
-        class="border p-2 rounded focus:outline-none focus:ring focus:border-blue-300 w-full md:w-3/4 lg:w-1/2"
-        type="text" placeholder="Add an ingredient to your list">
-      <b-button variant="warning" @click="addKeyword">+</b-button>
-      <!-- <b-button variant="success" @click="searchRecipes">Search</b-button> -->
-      <button @click="searchRecipes"
-        class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring focus:border-blue-300">
-        Search
-      </button>
-    </div>
-    <div id="checkboxes">
 
-      <div class="checkbox">
-        <input type="checkbox" id="vegetarian" name="vegetarian" />
-        <label for="vegetarian">Vegetarian</label>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox" id="peanut" name="peanut" />
-        <label for="peanut">Peanut-free</label>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox" id="pork" name="pork" />
-        <label for="pork">Pork-free</label>
-      </div>
-    </div>
-    <div id="keywords">
-      <div class="keyword" v-for="keyword of keywords" :key="keyword">
-        <p>{{ keyword }}</p>
-        <button class="delKeyword" @click="deleteKeyword(keyword)"><font-awesome-icon icon="x" /></button>
-      </div>
-    </div>
     <div id="recipes">
       <div class="col-md-4">
         <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
@@ -138,10 +146,11 @@ const search = () => {
 </template>
 
 <style scoped>
-.search {
-  margin-top: 10rem;
-
+h1 {
+  -webkit-text-stroke: 2px rgb(17, 24, 39);
 }
+
+
 
 .bgr-home {
   /* background-image: url('https://womensfitness.co.uk/wp-content/uploads/sites/3/2022/11/Shutterstock_1675475479.jpg?w=900'); */
@@ -152,35 +161,6 @@ const search = () => {
   min-height: 14rem;
 }
 
-.bgr-home h1 {
-  color: white;
-}
-
-#app {
-  text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  /* background-color: #333; */
-  background-color: #1d2834;
-}
-
-li {
-  float: right;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
 
 .error {
   color: red;
@@ -189,18 +169,7 @@ li a {
   margin-top: 1em;
 }
 
-#search {
-  margin-top: 20px;
-  display: inline;
-}
 
-.searchBar {
-  width: 50%;
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 20px;
-  margin-right: 10px;
-}
 
 .col-md-4 {
   display: inline-block;
@@ -211,18 +180,14 @@ li a {
   text-align: center;
 }
 
-#keywords {
-  margin-top: 10px;
-}
-
 .keyword {
-  text-align: center;
+  /* text-align: center;
   background-color: lightgoldenrodyellow;
   padding: 5px;
   width: 5%;
   border-radius: 15px;
-  border-width: 2px;
-  margin-right: 5px;
+  border-width: 2px; */
+  /* margin-right: 5px; */
   display: inline;
 }
 
