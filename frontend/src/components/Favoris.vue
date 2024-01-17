@@ -22,11 +22,10 @@ onMounted( async () => {
 
 const fetchRecipes = async (uriList) => {
     let listRecipes = [];
-    /*const uri = "http://www.edamam.com/ontologies/edamam.owl#recipe_8f4fa8052fd65e32ae8e98682f50a9db";
-    const id = uri.split('#recipe_').pop();*/
     for(const uri of uriList){
         const id = uri.split('#recipe_').pop();
-        const responseEdamam = await fetch("https://api.edamam.com/api/recipes/v2/" + id + "?type=public&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c");
+        // const responseEdamam = await fetch("https://api.edamam.com/api/recipes/v2/" + id + "?type=public&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c");
+        const responseEdamam = await api.getRecipeByID(id);
         if(responseEdamam.status === 200){
             const json = await responseEdamam.json();
             listRecipes.push(json.recipe);

@@ -9,6 +9,9 @@ export default defineConfig({
     proxy: {
       '^/api/users': {
         target: 'http://localhost:4000' 
+      },
+      '^/api/recipes': {
+        target: 'http://localhost:4000' 
       }
     }
   },

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as userController from '../controllers/userController.js';
-import {authenticateToken} from  '../middleware/token.js'
+import { authenticateToken } from '../middleware/token.js'
+import * as edamamController from '../controllers/edamamController.js'
 
 
 const router = Router();
@@ -559,4 +560,72 @@ router.route("/users/:id/program/update").post(userController.updateProgramDate)
 
 
 
+
+// ************************************************ Recipes : 
+/**
+ * @openapi
+ * /recipes:
+ *   post:
+ *     summary: Get recipes.
+ *     description: Retrieve a list of recipes with the ingredients provided.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               filters:
+ *                 type: string
+ *               health:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Succes
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data: [ ... ]  
+ *       '404':
+ *         description: Not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: Not found recipes.
+ *       '500':
+ *         description: Server Error
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: false
+ *               message: Internal Server Error
+ *     tags:
+ *       - Recipes
+ */
+router.route("/recipes").post(edamamController.getRecipes);
+
+/**
+ * @openapi
+ * /recipes/{id}:
+ *   get:
+ *     summary: Get a recipe by ID.
+ *     description: Returns a single recipe by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the recipe to retrieve.
+ *     responses:
+ *       200:
+ *         description: The recipe with the specified ID.
+ *       404:
+ *         description: recipe not found.
+ *     tags:
+ *       - Recipes
+ */
+router.route('/recipes/:id').get(edamamController.getRecipeByID);
 export default router;

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getRecipes } from '../api/src/controllers/edamamController';
 
 const instance = axios.create({
   baseURL: "/api", 
@@ -19,5 +20,7 @@ export const api = {
   login: (body) => requests.post('users/login', body),
   addFavorite: (id, body) => requests.post(`users/${id}/favorites/add`, body),
   getFavorites: (id) => requests.get(`users/${id}/favorites`, {}),
-  deleteFavorite: (id, body) => requests.delete(`users/${id}/favorites/remove`, body)
+  deleteFavorite: (id, body) => requests.delete(`users/${id}/favorites/remove`, body),
+  getRecipes: (body) => requests.post('recipes', body),
+  getRecipeByID: (id) => requests.get(`recipes/${id}`, {})
 };
