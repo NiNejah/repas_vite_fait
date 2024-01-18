@@ -1,5 +1,5 @@
 <script setup>
-import Recipe from './Recipe.vue';
+import Recipe from '../components/Recipe.vue';
 import { useUserStore } from '../stores/userStore.js';
 import { usePageStore } from '../stores/pageStore.js';
 import { ref, computed, toRefs, onMounted } from 'vue';
