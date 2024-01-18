@@ -3,7 +3,7 @@ import { ref, defineProps } from 'vue';
 import { api } from '../../http-api';
 import { useUserStore } from '../stores/userStore.js';
 import { usePageStore } from '../stores/pageStore.js';
-
+import Button from './Button.vue';
 const emit = defineEmits(['favorite-deleted']);
 
 const props = defineProps({
@@ -68,6 +68,11 @@ const changeFavorite = async () => {
                 <a v-bind:href="props.url" target="_blank"><span class="font-bold hover:text-green-500 cursor-pointer">{{ props.name }}</span></a>
                 <span class="block text-gray-500 text-sm">Source: {{ props.source }}</span>
             </div>
+            <div class="rigth-0 m-2" v-if="userStore.isConnected" >
+                <input class="schedule" type="date" value="2023-01-18" min="2023-01-01" max="2029-12-31"/>
+                <Button class="font-bold m-3"> add to calendar </Button>
+            </div>
+
             <div
                 class="absolute top-0 ml-2 mt-2 p-2 bg-secondary-100 text-secondary-200 text-xs  font-bold rounded-full">
                 <span>{{ Math.round(props.calories / props.servings) }} Kcal</span>
@@ -82,6 +87,13 @@ const changeFavorite = async () => {
             </div>
         </div>
     </div>
+
+    <!-- <div class="footer" v-if="userStore.isConnected">
+            <div class="selectDate">
+                <input class="schedule" type="date" value="2023-01-18" min="2023-01-01" max="2029-12-31"/>
+                <div class="meal"><b-button variant="success" size="sm">Submit meal to my schedule</b-button></div>
+            </div>
+    </div> -->
 </template>
 
 <style scoped>
