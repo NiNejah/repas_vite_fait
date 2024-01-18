@@ -13,7 +13,7 @@ services:
     volumes:
       - ./reverse-proxy/log:/var/log/nginx
     ports:
-      - 8080:80
+      - 3000:80
 
   frontend:
     build:
@@ -31,8 +31,13 @@ services:
       - MONGO_URI=mongodb://mongodb:27017/
       - MONGO_DB=repas
       - TOKEN_KEY=testazertyuiop
+      - REDIS_HOST=redis  # Add this line
+      - REDIS_PORT=6379   # Add this line
+      - EDAMAM_ID = 01c306cf
+      - EDAMAM_KEY = 6179f34f1acea7368bcd5d4020b90b0c
     depends_on:
       - mongodb
+      - redis
 
   mongodb:
     container_name: repas_mongo
@@ -42,6 +47,10 @@ services:
     volumes:
       - mongodb_data:/data/db
 
+  redis:
+    image: redis
+    ports:
+    - "6379:6379"
 volumes:
   mongodb_data:
 

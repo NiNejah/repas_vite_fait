@@ -1,10 +1,11 @@
 import connectDb from "./src/config/db.js";
 import express from 'express';
-import router  from "./src/routes/index.js";
+import router from "./src/routes/index.js";
 import { config } from "dotenv";
 import swaggerJsDoc from 'swagger-jsdoc';
 import { serve, setup } from 'swagger-ui-express';
 import cors from 'cors';
+import redis from './src/redis/redis.js'; // Import the redis instance directly if needed
 
 config();
 const host = process.env.HOST;
@@ -33,11 +34,27 @@ const options = {
 
 const openapiSpecification = swaggerJsDoc(options);
 
+
+app.use(cors())
 app.use(express.json())
-app.use('/api', router);
+app.use('/', router);
 app.use('/docs', serve, setup(openapiSpecification));
 app.use(cors());
 
-app.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`)
+
+// Graceful shutdown: Close Redis client when the server is shut down
+process.on('SIGINT', async () => {
+    try {
+        console.log('Closing Redis client');
+        await redis.quit();
+        console.log('Redis client closed');
+        process.exit(0);
+    } catch (error) {
+        console.error('Error closing Redis client:', error);
+        process.exit(1);
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on`)
 });
