@@ -7,7 +7,7 @@ import Button from './Button.vue';
 
 const store = useUserStore();
 let mylinks = ref([]);
-let open = ref(true);
+let open = ref(false);
 const props = defineProps(['isConnected']);
 
 onMounted(() => {

@@ -33,8 +33,8 @@ services:
       - TOKEN_KEY=testazertyuiop
       - REDIS_HOST=redis  # Add this line
       - REDIS_PORT=6379   # Add this line
-      - EDAMAM_ID = 01c306cf
-      - EDAMAM_KEY = 6179f34f1acea7368bcd5d4020b90b0c
+      - EDAMAM_ID=01c306cf
+      - EDAMAM_KEY=6179f34f1acea7368bcd5d4020b90b0c
     depends_on:
       - mongodb
       - redis

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { getRecipes } from '../api/src/controllers/edamamController';
 
 const instance = axios.create({
   baseURL: "/api", 

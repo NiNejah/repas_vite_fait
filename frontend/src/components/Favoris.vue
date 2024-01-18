@@ -13,7 +13,7 @@ onMounted( async () => {
     try {
         pageStore.joinFavoritePage();
         const responseUser = await api.getFavorites(userStore.userId);
-        console.log(responseUser.data);
+        // console.log(responseUser.data);
         await fetchRecipes(responseUser.data);
     } catch (error) {
         console.error('Failed to fetch favourite recipes: ', error);
@@ -26,9 +26,10 @@ const fetchRecipes = async (uriList) => {
         const id = uri.split('#recipe_').pop();
         // const responseEdamam = await fetch("https://api.edamam.com/api/recipes/v2/" + id + "?type=public&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c");
         const responseEdamam = await api.getRecipeByID(id);
-        if(responseEdamam.status === 200){
-            const json = await responseEdamam.json();
-            listRecipes.push(json.recipe);
+        console.log(responseEdamam);
+        if(responseEdamam.success){
+            // const json = await responseEdamam.json();
+            listRecipes.push(responseEdamam.data.recipe);
             /*const jsonRecipes = json.hits;
             for (const hit of jsonRecipes) {
                 const recipe = hit.recipe;
