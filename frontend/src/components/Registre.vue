@@ -27,6 +27,8 @@ const register = async () => {
     console.log(response.data);
     successful = true;
     message = 'user created successfully!';
+    store.connect();
+    store.setUser(response);
     router.push({name: 'home'});
   } catch (error) {
     console.error(error.message);

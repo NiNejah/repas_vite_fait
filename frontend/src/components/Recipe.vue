@@ -89,8 +89,8 @@ const recipeToSchedule = async (uri) => {
                 <span class="block text-gray-500 text-sm">Source: {{ props.source }}</span>
             </div>
             <div class="rigth-0 m-2" v-if="userStore.isConnected" >
-                <input class="schedule" type="date" value="2023-01-18" min="2023-01-01" max="2029-12-31"/>
-                <Button class="font-bold m-3"> add to calendar </Button>
+                <input v-model="dateQuery" class="schedule" type="date" value="2023-01-18" min="2023-01-01" max="2029-12-31"/>
+                <Button class="font-bold m-3" @click="recipeToSchedule(props.id)"> add to calendar </Button>
             </div>
 
             <div

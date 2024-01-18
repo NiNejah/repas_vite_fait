@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted ,defineEmits} from "vue";
+import { ref, defineProps, onMounted ,defineEmits, watch} from "vue";
 import { useUserStore } from '../stores/userStore';
 import router from "../router";
 import Button from './Button.vue';
@@ -11,6 +11,18 @@ let open = ref(true);
 const props = defineProps(['isConnected']);
 
 onMounted(() => {
+    updateBar();
+});
+
+// Watch for changes in isConnected
+watch(
+  () => store.isConnected,
+  (newValue, oldValue) => {
+    updateBar(newValue);
+  }
+);
+
+const updateBar = ()=>{
     if(store.isConnected){
         mylinks.value = [
             { name: "Home", link: "/" },
@@ -22,7 +34,7 @@ onMounted(() => {
         mylinks.value = [{ name: "Home", link: "/" }]
     }
     console.log("Links:", mylinks.value);
-});
+}
 
 const navigateTo = (link) => {
     console.log("Navigating to:", link);
