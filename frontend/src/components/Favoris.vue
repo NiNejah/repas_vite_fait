@@ -44,7 +44,7 @@ const fetchRecipes = async (uriList) => {
 }
 
 const handleFavoriteDeleted = (recipeId) => {
-    console.log(recipeId);
+    // console.log(recipeId);
     recipes.value = recipes.value.filter(recipe => recipe.uri !== recipeId);
 }
 

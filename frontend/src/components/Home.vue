@@ -46,7 +46,7 @@ const searchRecipes = async () => {
         filters: filters,
         health: health
       };
-      const response = await api.getRecipes(body);
+      const response = await api.getRecipes(body,userStore.userToken);
       // console.log(response);
 
       const jsonRecipes = response.data.hits;

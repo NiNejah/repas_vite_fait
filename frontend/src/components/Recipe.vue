@@ -27,7 +27,7 @@ const addFavoriteToUser = async (uri) => {
         const body = {
             favoriteId: uri
         };
-        const response = await api.addFavorite(userStore.userId, body);
+        const response = await api.addFavorite(userStore.userId, body,userStore.userToken);
         //console.log(response);
     } catch (error){
         console.error('Failed to add favourite to user: ', error);
@@ -36,13 +36,13 @@ const addFavoriteToUser = async (uri) => {
 
 const removeFavoriteFromUser = async (uri) => {
     try {
-        console.log(userStore.userId);
+        // console.log(userStore.userId);
         const body = {
             favoriteId: uri
         };
-        console.log(body);
+        // console.log(body);
         const response = await api.deleteFavorite(userStore.userId, body);
-        console.log(response);
+        // console.log(response);
         emit('favorite-deleted', uri);
     } catch (error){
         console.error('Failed to add favourite to user: ', error);
@@ -53,7 +53,7 @@ const recipeToSchedule = async (uri) => {
     try {
         const dateQ = dateQuery.value;
         const dateF = new Date(dateQ);
-        console.log(dateF);
+        // console.log(dateF);
         if(dateQuery.value !== ""){
             const body = {
                 programDate: {
@@ -61,8 +61,8 @@ const recipeToSchedule = async (uri) => {
                     date: dateQ
                 }
             }
-            const response = await api.addToSchedule(userStore.userId, body);
-            console.log(response);
+            const response = await api.addToSchedule(userStore.userId, body,userStore.userToken);
+            // console.log(response);
         }
     } catch (error) {
         console.error('Failed to add meal to schedule : ', error);

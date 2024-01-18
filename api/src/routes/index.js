@@ -221,7 +221,7 @@ router.route("/users/:id/favorites").get(userController.getAllFavorites);
  *     tags:
  *       - FAVORITES
  */
-router.route("/users/:id/favorites/add").post(userController.addOneFavorite);
+router.route("/users/:id/favorites/add").post(authenticateToken,userController.addOneFavorite);
 
 /**
  * @openapi
@@ -307,7 +307,7 @@ router.route("/users/:id/favorites/remove").delete(userController.removeOneFavor
  *     tags:
  *       - Allergic
  */
-router.route("/users/:id/vegetarian/update").post(userController.updateVegetarianField);
+router.route("/users/:id/vegetarian/update").post(authenticateToken,userController.updateVegetarianField);
 
 /**
  * @openapi
@@ -397,7 +397,7 @@ router.route("/users/:id/vegetarian").get(userController.getVegetarianStatus);
  *     tags:
  *       - Allergic
  */
-router.route("/users/:id/peanutFree/update").post(userController.updatePeanutFreeField);
+router.route("/users/:id/peanutFree/update").post(authenticateToken,userController.updatePeanutFreeField);
 
 /**
  * @openapi
@@ -487,7 +487,7 @@ router.route("/users/:id/peanutFree").get(userController.getPeanutFreeStatus);
  *     tags:
  *       - Allergic
  */
-router.route("/users/:id/porkFree/update").post(userController.updatePorkFreeField);
+router.route("/users/:id/porkFree/update").post(authenticateToken,userController.updatePorkFreeField);
 
 /**
  * @openapi
@@ -629,7 +629,7 @@ router.route("/users/:id/program").get(userController.getAllProgram);
  *     tags:
  *       - PROGRAM
  */
-router.route("/users/:id/program/add").post(userController.addProgramDate);
+router.route("/users/:id/program/add").post(authenticateToken,userController.addProgramDate);
 
 /**
  * @openapi
@@ -680,7 +680,7 @@ router.route("/users/:id/program/add").post(userController.addProgramDate);
  *     tags:
  *       - PROGRAM
  */
-router.route("/users/:id/program/remove").post(userController.deleteProgramDate);
+router.route("/users/:id/program/remove").post(authenticateToken,userController.deleteProgramDate);
 
 
 /**
@@ -734,7 +734,7 @@ router.route("/users/:id/program/remove").post(userController.deleteProgramDate)
  *     tags:
  *       - PROGRAM
  */
-router.route("/users/:id/program/update").post(userController.updateProgramDate);
+router.route("/users/:id/program/update").post(authenticateToken,userController.updateProgramDate);
 
 
 

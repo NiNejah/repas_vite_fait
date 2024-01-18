@@ -7,6 +7,7 @@ export const useUserStore = defineStore('user', () => {
 
     const userInfo = computed(() => user.value);
     const userId = computed(() => user.value?.data._id);
+    const userToken = computed(() => user.value?.token);
 
     const userName = computed(() => user.value?.data.username);
     const userMail = computed(() => user.value?.data.email);
@@ -37,5 +38,6 @@ export const useUserStore = defineStore('user', () => {
         setUser,
         isConnected,
         connect,
-        disconnect };
+        disconnect,
+        userToken };
 });
