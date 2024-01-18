@@ -38,14 +38,14 @@ export const getUser = async (req, res) => {
     const key = `user${req.params.id}`;
     const cachedData = await redis.get(key);
     if (cachedData !== null) {
-      console.log('Cache hit:', cachedData);
+      // console.log('Cache hit:', cachedData);
       // Parse cached data only if it exists
       const parsedCachedData = JSON.parse(cachedData);
       res.status(parsedCachedData.success ? 200 : 404).json(parsedCachedData);
     } else {
 
       const response = await getUserById(req.params.id);
-      console.log('Cache miss. Fetching data from the database:', response);
+      // console.log('Cache miss. Fetching data from the database:', response);
       res.status(response.success ? 200 : 404).json(response);
 
       // Update the cache with the fetched data

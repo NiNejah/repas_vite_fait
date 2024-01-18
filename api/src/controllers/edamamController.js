@@ -13,20 +13,20 @@ export const getRecipes = async (req, res) => {
         const cachedData = await redis.get(key);
 
         if (cachedData !== null) {
-            console.log('Cache hit:', cachedData);
+            // console.log('Cache hit:', cachedData);
             const parsedCachedData = JSON.parse(cachedData);
             res.status(parsedCachedData.success ? 200 : 404).json(parsedCachedData);
         } else {
-            console.log("api");
+            // console.log("api");
             const apiUrl = `https://api.edamam.com/api/recipes/v2?type=public&q=${req.body.filters}&app_id=${edamamID}&app_key=${edamamKey}${req.body.health}`;
 
             const response = await fetch(apiUrl);
             const responseData = await response.json();
 
-            console.log("API Response:", responseData);
-            console.log(apiUrl);
+            // console.log("API Response:", responseData);
+            // console.log(apiUrl);
             
-            console.log('Cache miss. Fetching data from the database:', responseData);
+            // console.log('Cache miss. Fetching data from the database:', responseData);
 
             res.status(response.ok ? 200 : 404).json({ success: response.ok ,data : responseData});
 
@@ -45,20 +45,20 @@ export const getRecipeByID = async (req, res) => {
         const cachedData = await redis.get(key);
 
         if (cachedData !== null) {
-            console.log('Cache hit:', cachedData);
+            // console.log('Cache hit:', cachedData);
             const parsedCachedData = JSON.parse(cachedData);
             res.status(parsedCachedData.success ? 200 : 404).json(parsedCachedData);
         } else {
-            console.log("api");
+            // console.log("api");
             const apiUrl = `https://api.edamam.com/api/recipes/v2/${req.params.id}?type=public&app_id=${edamamID}&app_key=${edamamKey}`;
 
             const response = await fetch(apiUrl);
             const responseData = await response.json();
 
-            console.log("API Response:", responseData);
-            console.log(apiUrl);
+            // console.log("API Response:", responseData);
+            // console.log(apiUrl);
             
-            console.log('Cache miss. Fetching data from the database:', responseData);
+            // console.log('Cache miss. Fetching data from the database:', responseData);
 
             res.status(response.ok ? 200 : 404).json({ success: response.ok ,data : responseData});
 
