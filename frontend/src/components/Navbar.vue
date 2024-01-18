@@ -11,7 +11,7 @@ let open = ref(true);
 const props = defineProps(['isConnected']);
 
 onMounted(() => {
-    if(true){
+    if(store.isConnected){
         mylinks.value = [
             { name: "Home", link: "/" },
             { name: "Profil", link: "/profil" },

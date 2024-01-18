@@ -1,5 +1,5 @@
 <script setup>
-import {ref, defineProps} from 'vue';
+import { ref, defineProps } from 'vue';
 import { api } from '../../http-api';
 import { useUserStore } from '../stores/userStore.js';
 import { usePageStore } from '../stores/pageStore.js';
@@ -9,7 +9,7 @@ const emit = defineEmits(['favorite-deleted']);
 const props = defineProps({
     id: String,
     name: String,
-    url: String, 
+    url: String,
     image_url: String,
     source: String,
     calories: Number,
@@ -17,7 +17,7 @@ const props = defineProps({
 });
 const userStore = useUserStore();
 const pageStore = usePageStore();
-
+const isFavorite = ref(pageStore.inFavorite);
 const name = ref(props.name);
 
 const addFavoriteToUser = async (uri) => {
@@ -28,7 +28,7 @@ const addFavoriteToUser = async (uri) => {
         };
         const response = await api.addFavorite(userStore.userId, body);
         //console.log(response);
-    } catch (error){
+    } catch (error) {
         console.error('Failed to add favourite to user: ', error);
     }
 }
@@ -43,44 +43,48 @@ const removeFavoriteFromUser = async (uri) => {
         const response = await api.deleteFavorite(userStore.userId, body);
         console.log(response);
         emit('favorite-deleted', uri);
-    } catch (error){
+    } catch (error) {
         console.error('Failed to add favourite to user: ', error);
     }
+}
+
+const changeFavorite = async () => {
+    if(isFavorite.value){
+        removeFavoriteFromUser(props.id);
+    }else {
+        addFavoriteToUser(props.id);
+    }
+    isFavorite.value = !isFavorite.value ;
 }
 
 </script>
 
 <template>
-    <div class="card">
-        <div class="header">
-            <a v-bind:href="props.url" target="_blank"><h3>{{ props.name }}</h3></a>
-            <b-button class="favorite" v-if="userStore.isConnected && !pageStore.inFavorite" @click="addFavoriteToUser(props.id)"><font-awesome-icon icon="star"/> </b-button>
-            <b-button class="favorite" v-if="userStore.isConnected && pageStore.inFavorite" @click="removeFavoriteFromUser(props.id)" variant="danger"><font-awesome-icon icon="trash"/> </b-button>
-        </div>
-        <div class="content">
-            <div class="recipeImg">
-                <img v-bind:src="props.image_url">
+    <div class="mt-8">
+        <!-- cards go here -->
+        <div class="rounded bg-white border-gray-200 shadow-md overflow-hidden relative">
+            <img v-bind:src="props.image_url" alt="stew" class="h-32 sm:h-48 w-full object-cover">
+            <div class="m-4">
+                <a v-bind:href="props.url" target="_blank"><span class="font-bold hover:text-green-500 cursor-pointer">{{ props.name }}</span></a>
+                <span class="block text-gray-500 text-sm">Source: {{ props.source }}</span>
             </div>
-            <div class="recipeInfos">
-                <p class="cal">{{ Math.round(props.calories / props.servings) }}</p>
-                <p>Kcal par serving</p>
-                <div class="smallInfos">
-                    <p>Servings: {{ props.servings }}</p>
-                    <p>Source: {{ props.source }}</p>
-                </div>
+            <div
+                class="absolute top-0 ml-2 mt-2 p-2 bg-secondary-100 text-secondary-200 text-xs  font-bold rounded-full">
+                <span>{{ Math.round(props.calories / props.servings) }} Kcal</span>
             </div>
-        </div>
-        <div class="footer" v-if="userStore.isConnected">
-            <div class="selectDate">
-                <input class="schedule" type="date" value="2023-01-18" min="2023-01-01" max="2029-12-31"/>
-                <div class="meal"><b-button variant="success" size="sm">Submit meal to my schedule</b-button></div>
+            <!-- :class="[open?'left-0':'left-[-100%]']" -->
+            <div v-if="userStore.isConnected"
+                class="absolute top-0 right-0 mr-2 mt-2 p-1"
+                :class="[isFavorite?'text-yellow-500':'text-white']">
+                <font-awesome-icon icon="fa-star" 
+                @click="changeFavorite()"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-
 .card {
     background-color: #fff;
     border: 1px solid #e2e2e2;
@@ -127,11 +131,12 @@ a {
 .recipeImg {
     width: 48%;
 }
+
 .content {
     display: inline;
 }
 
-.favorite{
+.favorite {
     float: right;
     margin: 10px;
 }
@@ -184,7 +189,7 @@ a {
     margin-right: 20px;
 }
 
-.smallInfos p{
+.smallInfos p {
     text-align: left;
     clear: left;
     float: left;
