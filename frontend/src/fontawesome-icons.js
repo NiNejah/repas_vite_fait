@@ -19,7 +19,8 @@ import {
     faSignInAlt,
     faSignOutAlt,
     faCalendar,
-    faTrash
+    faTrash,
+    faBowlFood
 
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -41,7 +42,8 @@ library.add(
     faSignInAlt,
     faSignOutAlt,
     faCalendar,
-    faTrash
+    faTrash,
+    faBowlFood
 
 );
 

@@ -19,6 +19,7 @@ const userStore = useUserStore();
 const pageStore = usePageStore();
 const isFavorite = ref(pageStore.inFavorite);
 const name = ref(props.name);
+const dateQuery = ref('');
 
 const addFavoriteToUser = async (uri) => {
     try {
@@ -56,6 +57,25 @@ const changeFavorite = async () => {
     }
     isFavorite.value = !isFavorite.value ;
 }
+const recipeToSchedule = async (uri) => {
+    try {
+        const dateQ = dateQuery.value;
+        const dateF = new Date(dateQ);
+        console.log(dateF);
+        if(dateQuery.value !== ""){
+            const body = {
+                programDate: {
+                    id: uri,
+                    date: dateQ
+                }
+            }
+            const response = await api.addToSchedule(userStore.userId, body);
+            console.log(response);
+        }
+    } catch (error) {
+        console.error('Failed to add meal to schedule : ', error);
+    }
+}
 
 </script>
 
@@ -90,8 +110,8 @@ const changeFavorite = async () => {
 
     <!-- <div class="footer" v-if="userStore.isConnected">
             <div class="selectDate">
-                <input class="schedule" type="date" value="2023-01-18" min="2023-01-01" max="2029-12-31"/>
-                <div class="meal"><b-button variant="success" size="sm">Submit meal to my schedule</b-button></div>
+                <input v-model="dateQuery" class="schedule" type="date" value="2024-01-18" min="2023-01-01" max="2029-12-31"/>
+                <div class="meal"><b-button variant="success" size="sm" type="submit" @click="recipeToSchedule(props.id)">Submit meal to my schedule</b-button></div>
             </div>
     </div> -->
 </template>
