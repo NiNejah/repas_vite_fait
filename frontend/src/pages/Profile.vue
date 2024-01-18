@@ -6,7 +6,7 @@ let user = ref(null);
 onMounted(() => {
     const store = useUserStore();
     if (store && store.user) {
-        console.log(store.user.data);
+        // console.log(store.user.data);
         user.value = {
             name: store.userName,
             email: store.userMail,

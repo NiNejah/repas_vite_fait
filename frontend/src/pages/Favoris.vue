@@ -28,7 +28,7 @@ const fetchRecipes = async (uriList) => {
         const id = uri.split('#recipe_').pop();
         // const responseEdamam = await fetch("https://api.edamam.com/api/recipes/v2/" + id + "?type=public&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c");
         const responseEdamam = await api.getRecipeByID(id);
-        console.log(responseEdamam);
+        // console.log(responseEdamam);
         if (responseEdamam.success) {
             // const json = await responseEdamam.json();
             listRecipes.push(responseEdamam.data.recipe);
@@ -40,7 +40,7 @@ const fetchRecipes = async (uriList) => {
         }
     }
     recipes.value = listRecipes;
-    console.log(recipes.value);
+    // console.log(recipes.value);
 }
 
 const handleFavoriteDeleted = (recipeId) => {

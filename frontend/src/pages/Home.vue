@@ -12,9 +12,11 @@ const searchQuery = ref('');
 
 const recipes = ref([]);
 const keywords = ref([]);
+const recipesRef = ref(null);
 
 onMounted(() => {
   pageStore.leaveFavoritePage();
+  recipesRef.value = document.getElementById('goto');
 });
 
 const addKeyword = () => {
@@ -28,7 +30,7 @@ const addKeyword = () => {
 
 const deleteKeyword = (keyword) => {
   keywords.value = keywords.value.filter(word => word !== keyword);
-  console.log(keywords._rawValue);
+  // console.log(keywords._rawValue);
 }
 
 const searchRecipes = async () => {
@@ -56,7 +58,11 @@ const searchRecipes = async () => {
         listRecipes.push(recipe);
       }
       recipes.value = listRecipes;
-      console.log(recipes.value);
+      if (recipesRef.value) {
+        await recipesRef.value.scrollIntoView({ behavior: 'smooth' });
+      }
+      // console.log(recipes.value);
+
     }
   } catch (error) {
     console.log(error);
@@ -143,6 +149,7 @@ const search = () => {
         </div>
       </div>
     </div>
+    <div id="goto"></div>
   </div>
 </template>
 
@@ -159,7 +166,7 @@ h1 {
   background-image: url('https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-vegetables.jpg');
   background-position: center;
   background-size: cover;
-  min-height: 14rem;
+  /* min-height: 14rem; */
 }
 
 

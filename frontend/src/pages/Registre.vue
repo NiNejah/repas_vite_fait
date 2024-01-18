@@ -22,9 +22,9 @@ const register = async () => {
     password: user.password
   };
   try {
-    console.log(userData);
+    // console.log(userData);
     const response = await api.addUser(userData);
-    console.log(response.data);
+    // console.log(response.data);
     successful = true;
     message = 'user created successfully!';
     store.connect();

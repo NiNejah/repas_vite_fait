@@ -37,7 +37,7 @@ onMounted(async () => {
 const loadPrograms = async () => {
     recipes.value = [];
     let listRecipes = [];
-    console.log(selectedDate.value.toString());
+    // console.log(selectedDate.value.toString());
     for (const program of programs.value) {
         const date = program.date.split('T')[0];
         const dateSplit = date.split('-');
@@ -47,7 +47,7 @@ const loadPrograms = async () => {
             const responseRecipe = await fetch("https://api.edamam.com/api/recipes/v2/" + program.id.split('#recipe_').pop() + "?type=public&app_id=01c306cf&app_key=6179f34f1acea7368bcd5d4020b90b0c");
             if (responseRecipe.status === 200) {
                 const json = await responseRecipe.json();
-                console.log(json);
+                // console.log(json);
                 listRecipes.push(json.recipe);
             }
         }
