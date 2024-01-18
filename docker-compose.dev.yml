@@ -25,8 +25,7 @@ services:
     build: 
       context: api
       dockerfile: Dockerfile.dev
-    volumes:
-      - ./api/src:/app/src
+
     environment:
       - MONGO_URI=mongodb://mongodb:27017/
       - MONGO_DB=repas
@@ -38,6 +37,8 @@ services:
     depends_on:
       - mongodb
       - redis
+    volumes:
+      - ./api/src:/app/src
 
   mongodb:
     container_name: repas_mongo

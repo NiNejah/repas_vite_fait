@@ -49,7 +49,7 @@ const searchRecipes = async () => {
       const response = await api.getRecipes(body);
       // console.log(response);
 
-      const jsonRecipes = response.hits;
+      const jsonRecipes = response.data.hits;
       let listRecipes = [];
       for (const hit of jsonRecipes) {
         const recipe = hit.recipe;
