@@ -136,7 +136,7 @@ const search = () => {
     </div>
 
     <div id="recipes">
-      <div class="col-md-4">
+      <div class="m-10 grid lg:grid-cols-4 gap-10 ">
         <div class="recipe" v-for="recipe in recipes" :key="recipe.id">
           <Recipe :id="recipe.uri" :name="recipe.label" :url="recipe.url" :image_url="recipe.image"
             :calories="recipe.calories" :servings="recipe.yield" :source="recipe.source" />
@@ -178,7 +178,7 @@ h1 {
 }
 
 #recipes {
-  text-align: center;
+  /* text-align: center; */
 }
 
 .keyword {
